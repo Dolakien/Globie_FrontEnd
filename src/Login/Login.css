@@ -75,6 +75,8 @@
 }
 
 .slide-controls label.signup {
+  height: 415.6px;
+  width: 258.08px;
   color: #000;
 }
 
@@ -289,36 +291,4 @@ form .btn input[type="submit"] {
 
 .google-btn .btn-layer {
   background: rgba(0, 0, 0, 0.1);
-}
-
-/* Style for new userName field */
-.form-inner form .user-name-field {
-  height: 50px;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.form-inner form .user-name-field input {
-  height: 100%;
-  width: 100%;
-  outline: none;
-  padding-left: 15px;
-  border-radius: 15px;
-  border: 1px solid lightgrey;
-  border-bottom-width: 2px;
-  font-size: 17px;
-  transition: border-color 0.3s ease;
-}
-
-.form-inner form .user-name-field input:focus {
-  border-color: #FFD861;
-}
-
-.form-inner form .user-name-field input::placeholder {
-  color: #999;
-  transition: color 0.3s ease;
-}
-
-form .user-name-field input:focus::placeholder {
-  color: #FFD861;
 }

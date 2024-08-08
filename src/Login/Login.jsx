@@ -96,7 +96,7 @@ const Login = () => {
   </form>
 ) : (
   <form onSubmit={handleSubmit} className="signup">
-    <div className="user-name-field">
+    <div className="field">
       <input
         type="text"
         placeholder="Username"
