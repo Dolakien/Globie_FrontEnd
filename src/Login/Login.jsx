@@ -32,8 +32,9 @@ const Login = () => {
       {success && <SuccessOverlay />} {/* Show overlay on success */}
       <div className="wrapper">
         <div className="title-text">
-          <div className={`title ${isLogin ? 'active' : ''}`}>Globie</div>
-          <div className={`title ${!isLogin ? 'active' : ''}`}>Signup Form</div>
+          <div className={`title ${isLogin ? 'active' : ''}`}>
+            Globie
+          </div>
         </div>
         <div className="form-container">
           <div className="slide-controls">
@@ -60,85 +61,85 @@ const Login = () => {
             <div className="slider-tab"></div>
           </div>
           <div className="form-inner">
-            {isLogin ? (
-              <form onSubmit={handleSubmit} className="login">
-                
-                <div className="field">
-                  <input
-                    type="text"
-                    placeholder="Email Address"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="field">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="field btn">
-                  <div className="btn-layer"></div>
-                  <input type="submit" value="Login" />
-                </div>
-                <div className="google-btn" onClick={handleGoogleLogin}>
-                  <img src="https://e7.pngegg.com/pngimages/56/318/png-clipart-google-logo-logo-logo-company-text.png" alt="Google Logo" />
-                  Continue with Google
-                </div>
-                <div className="signup-link">
-                  Not a member? <a href="#" onClick={() => setIsLogin(false)}>Signup now</a>
-                </div>
-                {error && <p className="error">{error}</p>}
-              </form>
-            ) : (
-              <form onSubmit={handleSubmit} className="signup">
-                <div className="field">
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    required
-                    value={email}
-                    onChange={(e) => setUserName(e.target.value)}
-                  />
-                </div>
-                <div className="field">
-                  <input
-                    type="text"
-                    placeholder="Email Address"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="field">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="field">
-                  <input
-                    type="password"
-                    placeholder="Confirm password"
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </div>
-                <div className="field btn">
-                  <div className="btn-layer"></div>
-                  <input type="submit" value="Signup" />
-                </div>
-                {error && <p className="error">{error}</p>}
-              </form>
-            )}
+          {isLogin ? (
+  <form onSubmit={handleSubmit} className="login">
+    <div className="field">
+      <input
+        type="text"
+        placeholder="Email Address"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </div>
+    <div className="field">
+      <input
+        type="password"
+        placeholder="Password"
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+    </div>
+    <div className="field btn">
+      <div className="btn-layer"></div>
+      <input type="submit" value="Login" />
+    </div>
+    <div className="google-btn" onClick={handleGoogleLogin}>
+      <img src="https://e7.pngegg.com/pngimages/56/318/png-clipart-google-logo-logo-logo-company-text.png" alt="Google Logo" />
+      Continue with Google
+    </div>
+    <div className="signup-link">
+      Not a member? <a href="#" onClick={() => setIsLogin(false)}>Signup now</a>
+    </div>
+    {error && <p className="error">{error}</p>}
+  </form>
+) : (
+  <form onSubmit={handleSubmit} className="signup">
+    <div className="user-name-field">
+      <input
+        type="text"
+        placeholder="Username"
+        required
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)}
+      />
+    </div>
+    <div className="field">
+      <input
+        type="text"
+        placeholder="Email Address"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </div>
+    <div className="field">
+      <input
+        type="password"
+        placeholder="Password"
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+    </div>
+    <div className="field">
+      <input
+        type="password"
+        placeholder="Confirm password"
+        required
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+      />
+    </div>
+    <div className="field btn">
+      <div className="btn-layer"></div>
+      <input type="submit" value="Signup" />
+    </div>
+    {error && <p className="error">{error}</p>}
+  </form>
+)}
+            
           </div>
         </div>
       </div>

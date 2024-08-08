@@ -12,10 +12,11 @@
 .login-page {
   display: grid;
   height: 100vh; /* Full viewport height */
-  width: 100vw;  /* Full viewport width */
+  width: 100%;  /* Fit the viewport width */
   place-items: center;
   background: linear-gradient(to right, #FFD861, #FFCA28, #FFC107, #FFA000);
 }
+
 
 ::selection {
   background: #FFD861;
@@ -119,6 +120,8 @@ input[type="radio"] {
 .wrapper .form-container {
   width: 100%;
   overflow: hidden;
+  height: 415.6px;
+  width: 258.8px;
 }
 
 .form-container .form-inner {
