@@ -1,9 +1,16 @@
 // src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import Home from './Home';
-import Login from './Login/Login';
-import Header from './components/Header';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Login from "./pages/Login/Login";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
 const App = () => {
   return (
@@ -15,6 +22,7 @@ const App = () => {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
       </div>
     </Router>
@@ -24,7 +32,10 @@ const App = () => {
 // Component to conditionally display Header based on current path
 const HeaderWithConditionalDisplay = () => {
   const location = useLocation();
-  return location.pathname !== '/login' ? <Header /> : null;
+  const isShowHeader = !["/login", "/forgot-password"].includes(
+    location.pathname
+  );
+  return isShowHeader ? <Header /> : null;
 };
 
 export default App;
