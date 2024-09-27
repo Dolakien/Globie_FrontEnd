@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import './Header.css';
-import { Link } from 'react-router-dom';
-import { FaUser, FaRegNewspaper, FaShoppingCart, FaRegEnvelope, FaBars } from 'react-icons/fa';
+import React, { useState } from "react";
+import "./Header.css";
+import { Link } from "react-router-dom";
+import {
+  FaUser,
+  FaRegNewspaper,
+  FaShoppingCart,
+  FaRegEnvelope,
+  FaBars,
+} from "react-icons/fa";
+import { TOKEN_STORAGE_KEY } from "../constants";
 
 const Header = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [showOrders, setShowOrders] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -21,7 +30,7 @@ const Header = () => {
     // Xử lý tìm kiếm ở đây
     console.log("Searching for:", searchQuery);
   };
- 
+
   const handleMouseEnterOrderDropDown = () => {
     setShowOrders(true);
   };
@@ -36,6 +45,11 @@ const Header = () => {
 
   const handleMouseLeaveMenuDropDown = () => {
     setMenuOpen(false);
+  };
+
+  const onSignOut = () => {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    window.location.href = "/login";
   };
 
   return (
@@ -53,51 +67,67 @@ const Header = () => {
         </div>
         <nav className="header-right">
           <Link to="/message" className="nav-link">
-            <FaRegEnvelope size={20} /> 
-            <span>Tin nhắn</span> 
+            <FaRegEnvelope size={20} />
+            <span>Tin nhắn</span>
           </Link>
-          <div 
-            className="nav-link" 
-            onMouseEnter={handleMouseEnterOrderDropDown} 
+          <div
+            className="nav-link"
+            onMouseEnter={handleMouseEnterOrderDropDown}
             onMouseLeave={handleMouseLeaveOrderDropDown}
           >
             <Link to="/build-configuration" className="nav-link">
-              <FaShoppingCart size={20} /> 
+              <FaShoppingCart size={20} />
               <span>Đơn hàng</span>
             </Link>
             {/* Phần hiển thị các ô đơn hàng */}
             {showOrders && (
               <div className="orders-dropdown">
-                <Link to="/buy-orders" className="order-link">Đơn mua</Link>
-                <Link to="/sell-orders" className="order-link">Đơn bán</Link>
+                <Link to="/buy-orders" className="order-link">
+                  Đơn mua
+                </Link>
+                <Link to="/sell-orders" className="order-link">
+                  Đơn bán
+                </Link>
               </div>
             )}
           </div>
           <Link to="/view-post" className="nav-link">
-            <FaRegNewspaper size={20} /> 
-            <span>Quản lý tin</span> 
+            <FaRegNewspaper size={20} />
+            <span>Quản lý tin</span>
           </Link>
-          <Link to="/login" className="nav-link login-button">
-            <FaUser size={20} /> 
-            <span>Đăng nhập</span> 
-          </Link>
+          {isLogged ? (
+            <p className="logout-btn" onClick={onSignOut}>
+              Đăng xuất
+            </p>
+          ) : (
+            <Link to="/login" className="nav-link login-button">
+              <FaUser size={20} />
+              <span>Đăng nhập</span>
+            </Link>
+          )}
         </nav>
       </header>
       <header className="small-header">
-        <div className="menu-container"
-        onMouseEnter={handleMouseEnterMenuDropDown} 
-        onMouseLeave={handleMouseLeaveMenuDropDown}
+        <div
+          className="menu-container"
+          onMouseEnter={handleMouseEnterMenuDropDown}
+          onMouseLeave={handleMouseLeaveMenuDropDown}
         >
-        
           <button onClick={toggleMenu} className="menu-button">
             <FaBars size={24} /> {/* Biểu tượng ba gạch ngang */}
             <span>Danh mục</span>
           </button>
           {menuOpen && (
             <nav className="menu-dropdown">
-              <a href="#home" className="menu-link">Home</a>
-              <a href="#services" className="menu-link">Services</a>
-              <a href="#contact" className="menu-link">Contact</a>
+              <a href="#home" className="menu-link">
+                Home
+              </a>
+              <a href="#services" className="menu-link">
+                Services
+              </a>
+              <a href="#contact" className="menu-link">
+                Contact
+              </a>
               {/* Thêm các liên kết khác nếu cần */}
             </nav>
           )}
@@ -112,7 +142,10 @@ const Header = () => {
               className="search-input"
             />
             <button type="submit" className="search-button">
-              <span role="img" aria-label="search">🔍</span> {/* Biểu tượng tìm kiếm */}
+              <span role="img" aria-label="search">
+                🔍
+              </span>{" "}
+              {/* Biểu tượng tìm kiếm */}
             </button>
           </form>
         </div>

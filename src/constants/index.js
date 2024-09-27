@@ -1,0 +1,1 @@
+export const TOKEN_STORAGE_KEY = "GLOBIE_ACCESS_TOKEN";
