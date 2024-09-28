@@ -8,6 +8,7 @@ import {
   FaTelegramPlane,
   FaRegHeart,
   FaRegUser,
+  FaRegEdit,
 } from "react-icons/fa";
 import { CiBoxList } from "react-icons/ci";
 import { TOKEN_STORAGE_KEY } from "../../constants";
@@ -99,6 +100,14 @@ const HeaderClient = () => {
             ) : (
               <Link to="/login">Đăng nhập</Link>
             )}
+
+            <Link
+              to="/post-product"
+              className="flex items-center bg-orange-500 rounded-md p-3 gap-x-2 text-white text-sm font-semibold"
+            >
+              <FaRegEdit className="text-lg" />
+              <p>POST PRODUCT</p>
+            </Link>
           </div>
         </div>
       </div>
