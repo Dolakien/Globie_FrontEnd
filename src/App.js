@@ -5,6 +5,7 @@ import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ClientLayout from "./layouts/ClientLayout/ClientLayout";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
+import BuildPc from "./pages/BuildPc/BuildPc";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route element={<ClientLayout />}>
           <Route element={<Home />} path="/" />
           <Route element={<ProductDetail />} path="/products/:id" />
+          <Route element={<BuildPc />} path="/build-pc" />
         </Route>
 
         {/* auth route */}
