@@ -11,13 +11,14 @@ import {
   FaRegEdit,
 } from "react-icons/fa";
 import { CiBoxList } from "react-icons/ci";
-import { TOKEN_STORAGE_KEY } from "../../constants";
+import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
 
 const HeaderClient = () => {
   const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
 
   const onSignOut = () => {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
+    localStorage.removeItem(USER_ROLE_STORAGE_KEY);
     window.location.href = "/login";
   };
 

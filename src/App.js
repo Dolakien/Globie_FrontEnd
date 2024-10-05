@@ -13,6 +13,7 @@ import Dashboard from "./pages/Admin/Dashboard/Dashboard";
 import ProductCategoryList from "./pages/Admin/ProductCategoryManager/ProductCategoryList";
 import AddProductCategory from "./pages/Admin/ProductCategoryManager/AddProductCategory";
 import ProductList from "./pages/Admin/ProductManager/ProductList";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 const App = () => {
   return (
@@ -31,7 +32,14 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* admin route */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <AdminLayout />
+            </PrivateRoute>
+          }
+        >
           <Route index element={<Dashboard />} />
 
           <Route path="categories" element={<ProductCategoryList />} />

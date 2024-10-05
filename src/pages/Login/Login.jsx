@@ -3,7 +3,7 @@ import "./Login.css";
 import { toast } from "react-toastify";
 import { AuthApi } from "../../api/authApi";
 import { jwtDecode } from "jwt-decode";
-import { TOKEN_STORAGE_KEY } from "../../constants";
+import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -50,6 +50,7 @@ const Login = () => {
         setStep("VERIFY_OTP");
       } else {
         localStorage.setItem(TOKEN_STORAGE_KEY, token);
+        localStorage.setItem(USER_ROLE_STORAGE_KEY, decoded.scope);
         window.location.href = "/";
       }
     } catch (error) {
