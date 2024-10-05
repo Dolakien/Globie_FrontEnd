@@ -8,6 +8,10 @@ import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import BuildPc from "./pages/BuildPc/BuildPc";
 import PostProduct from "./pages/PostProduct/PostProduct";
 import CreateStore from "./pages/CreateStore/CreateStore";
+import AdminLayout from "./layouts/AdminLayout/AdminLayout";
+import Dashboard from "./pages/Admin/Dashboard/Dashboard";
+import ProductCategoryList from "./pages/Admin/ProductCategoryManager/ProductCategoryList";
+import AddProductCategory from "./pages/Admin/ProductCategoryManager/AddProductCategory";
 
 const App = () => {
   return (
@@ -24,6 +28,14 @@ const App = () => {
         {/* auth route */}
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* admin route */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+
+          <Route path="categories" element={<ProductCategoryList />} />
+          <Route path="categories/add" element={<AddProductCategory />} />
+        </Route>
       </Routes>
     </Router>
   );
