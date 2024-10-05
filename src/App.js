@@ -12,6 +12,7 @@ import AdminLayout from "./layouts/AdminLayout/AdminLayout";
 import Dashboard from "./pages/Admin/Dashboard/Dashboard";
 import ProductCategoryList from "./pages/Admin/ProductCategoryManager/ProductCategoryList";
 import AddProductCategory from "./pages/Admin/ProductCategoryManager/AddProductCategory";
+import ProductList from "./pages/Admin/ProductManager/ProductList";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
 
           <Route path="categories" element={<ProductCategoryList />} />
           <Route path="categories/add" element={<AddProductCategory />} />
+          <Route path="products" element={<ProductList />} />
         </Route>
       </Routes>
     </Router>

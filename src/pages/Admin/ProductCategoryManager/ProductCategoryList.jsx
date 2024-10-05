@@ -76,7 +76,12 @@ const ProductCategoryList = () => {
     <>
       <h2 className="font-semibold text-2xl mb-4">Category List</h2>
 
-      <Table columns={columns} dataSource={data} scroll={{ x: 900 }} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        scroll={{ x: 900 }}
+        rowKey="productCategoryId"
+      />
     </>
   );
 };

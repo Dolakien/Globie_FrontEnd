@@ -2,6 +2,7 @@ import React from "react";
 import { AppstoreOutlined, BarChartOutlined } from "@ant-design/icons";
 import { Dropdown, Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
+import { TOKEN_STORAGE_KEY } from "../../constants";
 const siderStyle = {
   overflow: "auto",
   height: "100vh",
@@ -16,11 +17,16 @@ const siderStyle = {
 const { Header, Content, Sider } = Layout;
 
 const AdminLayout = () => {
+  const onLogout = () => {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    window.location.href = "/login";
+  };
+
   const menuItems = [
     {
       key: "1",
       icon: <BarChartOutlined />,
-      label: <Link>Dashboard</Link>,
+      label: <Link to="/admin">Dashboard</Link>,
     },
     {
       key: "2",
@@ -34,6 +40,31 @@ const AdminLayout = () => {
         {
           key: "sub22",
           label: <Link to="/admin/categories/add">Add Category</Link>,
+        },
+      ],
+    },
+    {
+      key: "3",
+      icon: <AppstoreOutlined />,
+      label: "Product",
+      children: [
+        {
+          key: "sub31",
+          label: <Link to="/admin/products/?type=all">List Product</Link>,
+        },
+        {
+          key: "sub32",
+          label: (
+            <Link to="/admin/products/?type=selling">List selling product</Link>
+          ),
+        },
+        {
+          key: "sub33",
+          label: (
+            <Link to="/admin/products/?type=processing">
+              List processing product
+            </Link>
+          ),
         },
       ],
     },
@@ -67,6 +98,7 @@ const AdminLayout = () => {
                 },
                 {
                   label: "Đăng xuất",
+                  onClick: onLogout,
                 },
               ],
             }}
