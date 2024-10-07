@@ -41,12 +41,27 @@ const AdminLayout = () => {
         label: "Category",
         children: [
           {
-            key: "sub21",
+            key: "sub11",
             label: <Link to="/admin/categories">List Category</Link>,
           },
           {
-            key: "sub22",
+            key: "sub12",
             label: <Link to="/admin/categories/add">Add Category</Link>,
+          },
+        ],
+      });
+      menuItems.splice(1, 0, {
+        key: "3",
+        icon: <AppstoreOutlined />,
+        label: "Account",
+        children: [
+          {
+            key: "sub21",
+            label: <Link to="/admin/accounts">List Account</Link>,
+          },
+          {
+            key: "sub22",
+            label: <Link to="/admin/accounts/add">Add Account</Link>,
           },
         ],
       });
