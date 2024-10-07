@@ -14,6 +14,8 @@ import ProductCategoryList from "./pages/Admin/ProductCategoryManager/ProductCat
 import AddProductCategory from "./pages/Admin/ProductCategoryManager/AddProductCategory";
 import ProductList from "./pages/Admin/ProductManager/ProductList";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import AccountList from "./pages/Admin/AccountManager/AccountList";
+import AddAccount from "./pages/Admin/AccountManager/AddAccount";
 
 const App = () => {
   return (
@@ -45,6 +47,9 @@ const App = () => {
           <Route path="categories" element={<ProductCategoryList />} />
           <Route path="categories/add" element={<AddProductCategory />} />
           <Route path="products" element={<ProductList />} />
+          <Route path="accounts" element={<AccountList />} />
+          <Route path="accounts/add" element={<AddAccount />} />
+
         </Route>
       </Routes>
     </Router>
