@@ -16,6 +16,9 @@ import ProductList from "./pages/Admin/ProductManager/ProductList";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import AccountList from "./pages/Admin/AccountManager/AccountList";
 import AddAccount from "./pages/Admin/AccountManager/AddAccount";
+import ReportList from "./pages/Admin/ReportManager/ReportList";
+import AddReport from "./pages/Admin/ReportManager/AddReport";
+
 
 const App = () => {
   return (
@@ -49,6 +52,8 @@ const App = () => {
           <Route path="products" element={<ProductList />} />
           <Route path="accounts" element={<AccountList />} />
           <Route path="accounts/add" element={<AddAccount />} />
+          <Route path="reports" element={<ReportList />} />
+          <Route path="reports/add" element={<AddReport />} />
 
         </Route>
       </Routes>
