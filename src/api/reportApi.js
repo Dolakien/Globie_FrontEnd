@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 
 const reportApi = {
   getAllReport: () => {
-    return apiClient.get("report/all");
+    return apiClient.get("/report/all");
   },
   getAllReportApproved: () => {
     return apiClient.get("/report/all/approved");
@@ -14,7 +14,7 @@ const reportApi = {
     return apiClient.get("/report/all/processing");
   },
   getReportDetail: (id) => {
-    return apiClient.get(`report/detail/${id}`);
+    return apiClient.get(`/report/detail/${id}`);
   },
   deleteReport: (id) => {
     return apiClient.delete(`report/delete/${id}`);

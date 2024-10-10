@@ -5,6 +5,8 @@ import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import accountapi from "../../../api/accountApi";
 import dayjs from 'dayjs';
+import { FaMale, FaFemale } from 'react-icons/fa'; // Import gender icons from react-icons
+
 
 const AccountList = () => {
   const [data, setData] = useState([]);
@@ -83,6 +85,17 @@ const AccountList = () => {
         title: "Sex",
         dataIndex: "sex",
         key: "sex",
+        render: (sex) => {
+          return sex ? (
+            <span>
+              <FaMale style={{ color: 'blue', marginRight: 4 }} /> Male
+            </span>
+          ) : (
+            <span>
+              <FaFemale style={{ color: 'pink', marginRight: 4 }} /> Female
+            </span>
+          );
+        }
       },
       {
         title: "Address",
