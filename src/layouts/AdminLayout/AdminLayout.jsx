@@ -65,6 +65,39 @@ const AdminLayout = () => {
           },
         ],
       });
+      menuItems.splice(1, 0, {
+        key: "4",
+        icon: <AppstoreOutlined />,
+        label: "Report",
+        children: [
+          {
+            key: "sub31",
+            label: (
+              <Link to="/admin/reports/?type=processing">
+                List processing Report
+              </Link>
+            ),
+          },
+          {
+            key: "sub32",
+            label: (
+              <Link to="/admin/reports/?type=approved">
+                List Approved Report
+              </Link>
+            ),
+          },
+
+          {
+            key: "sub33",
+            label: (
+              <Link to="/admin/reports/?type=rejected">
+                List Rejected Report
+              </Link>
+            ),
+          },
+
+        ],
+      });
     }
 
     if (role === "STAFF") {
@@ -92,6 +125,18 @@ const AdminLayout = () => {
                 List processing product
               </Link>
             ),
+          },
+        ],
+      });
+
+      menuItems.splice(1, 0, {
+        key: "4",
+        icon: <AppstoreOutlined />,
+        label: "Post",
+        children: [
+          {
+            key: "sub41",
+            label: <Link to="/admin/reports/add">Add Post</Link>,
           },
         ],
       });
