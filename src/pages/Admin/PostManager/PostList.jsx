@@ -3,10 +3,10 @@ import { Flex, message, Popconfirm, Table, Tag } from "antd";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
-import reportApi from "../../../api/reportApi";
+import postApi from "../../../api/postApi";
 import { Dropdown, Menu} from 'antd'; // Make sure these are imported
 
-const ReportList = () => {
+const PostsList = () => {
   const [data, setData] = useState([]);
 
   const [searchParams] = useSearchParams();
@@ -22,25 +22,18 @@ const ReportList = () => {
 
       switch (type) {
         case "approved": {
-          const res = await reportApi.getAllReportApproved();
+          const res = await postApi.getAllPostApproved();
           data = res.data.data;
           break;
         }
 
         case "processing": {
-          const res = await reportApi.getAllReportProccessing();
+          const res = await postApi.getAllPostProccessing();
           data = res.data.data;
           break;
         }
-
-        case "rejected": {
-            const res = await reportApi.getAllReportRejected();
-            data = res.data.data;
-            break;
-          }
-
         default: {
-          const res = await reportApi.getAllReport();
+          const res = await postApi.getAllPost();
           data = res.data.data;
         }
       }
@@ -51,10 +44,10 @@ const ReportList = () => {
     }
   }, [type]);
 
-  const handleDeleteReport = useCallback(
+  const handleDeletePost = useCallback(
     async (id) => {
       try {
-        await reportApi.deleteReport(id);
+        await postApi.deletePost(id);
         fetchData();
         message.success("Delete successfully");
       } catch (error) {
@@ -66,17 +59,7 @@ const ReportList = () => {
 
   const handleUpdateSttApproved = async (id) => {
     try {
-      await reportApi.updateReportApproved(id);
-      fetchData();
-      message.success("Update status successfully");
-    } catch (error) {
-      message.error("Failed to update status");
-    }
-  };
-
-  const handleUpdateSttRejected = async (id) => {
-    try {
-      await reportApi.updateReportRejected(id);
+      await postApi.updatePostApproved(id);
       fetchData();
       message.success("Update status successfully");
     } catch (error) {
@@ -87,29 +70,19 @@ const ReportList = () => {
   const columns = useMemo(() => {
     const columns = [
       {
-        title: "Id",
-        key: "reportId",
-        dataIndex: "reportId",
+        title: "ID",
+        key: "postId",
+        dataIndex: "postId",
       },
       {
-        title: "Message",
-        dataIndex: "message",
-        key: "message",
+        title: "Post Title",
+        dataIndex: "postTitle",
+        key: "postTitle",
       },
       {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-        render: (status) => {
-          if (status === "Rejected") {
-            return <Tag color="red">Rejected</Tag>;
-          }
-          return status === "Approved" ? (
-            <Tag color="green">Approved</Tag>
-          ) : (
-            <Tag color="gold">Processing</Tag>
-          );
-        }
+        title: "Post Content",
+        dataIndex: "postContent",
+        key: "postContent",
       },
       {
         title: "Created-Time",
@@ -117,17 +90,29 @@ const ReportList = () => {
         key: "createdTime",
       },
       {
-        title: "UpdatedTime",
+        title: "Updated-Time",
         dataIndex: "updatedTime",
         key: "updatedTime",
       },
       {
-        title: "productId",
-        dataIndex: "productId",
-        key: "productId",
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        render: (status) => {
+          return status ? (
+            <Tag color="green">Approved</Tag>
+          ) : (
+            <Tag color="gold">Processing</Tag>
+          );
+        }
       },
       {
-        title: "userId",
+        title: "Post Category ID",
+        dataIndex: "postCategoryId",
+        key: "postCategoryId",
+      },
+      {
+        title: "User ID",
         dataIndex: "userId",
         key: "userId",
       },
@@ -138,11 +123,8 @@ const ReportList = () => {
           // Dropdown Menu for Approve and Reject options
           const menu = (
             <Menu>
-              <Menu.Item key="approve" onClick={() => handleUpdateSttApproved(row.reportId)}>
+              <Menu.Item key="approve" onClick={() => handleUpdateSttApproved(row.postId)}>
                 Approve
-              </Menu.Item>
-              <Menu.Item key="reject" onClick={() => handleUpdateSttRejected(row.reportId)}>
-                Reject
               </Menu.Item>
             </Menu>
           );
@@ -150,9 +132,9 @@ const ReportList = () => {
           return (
             <Flex gap={8} align="center">
               <Popconfirm
-                title="Delete report"
-                description="Are you sure you want to delete this report?"
-                onConfirm={() => handleDeleteReport(row.reportId)}
+                title="Delete post"
+                description="Are you sure you want to delete this post?"
+                onConfirm={() => handleDeletePost(row.postId)}
               >
                 <FaRegTrashAlt className="text-base text-red-500 cursor-pointer" />
               </Popconfirm>
@@ -170,31 +152,19 @@ const ReportList = () => {
       },
     ];
 
-    if (type === "all") {
-      columns.splice(5, 0, {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-        render: (stt) => <Tag color="green">{stt}</Tag>,
-      });
-    }
-
     return columns;
-  }, [handleDeleteReport, type]);
+  }, [handleDeletePost, type]);
 
   const renderTitle = () => {
     switch (type) {
       case "approved": {
-        return "Approved Report List";
+        return "Approved Post List";
       }
       case "processing": {
-        return "Processing Report List";
-      }
-      case "rejected": {
-        return "Rejected Report List";
+        return "Processing Post List";
       }
       default: {
-        return "All Report List";
+        return "All Post List";
       }
     }
   };
@@ -203,9 +173,9 @@ const ReportList = () => {
     <>
       <h2 className="font-semibold text-2xl mb-4">{renderTitle()}</h2>
 
-      <Table columns={columns} dataSource={data} rowKey="reportId" />
+      <Table columns={columns} dataSource={data} rowKey="postId" />
     </>
   );
 };
 
-export default ReportList;
+export default PostsList;

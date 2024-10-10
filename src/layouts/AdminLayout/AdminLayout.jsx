@@ -38,7 +38,7 @@ const AdminLayout = () => {
       menuItems.splice(1, 0, {
         key: "2",
         icon: <AppstoreOutlined />,
-        label: "Category",
+        label: "Product Category",
         children: [
           {
             key: "sub11",
@@ -53,6 +53,21 @@ const AdminLayout = () => {
       menuItems.splice(1, 0, {
         key: "3",
         icon: <AppstoreOutlined />,
+        label: "Post Category",
+        children: [
+          {
+            key: "sub1",
+            label: <Link to="/admin/postCategories">List Post Category</Link>,
+          },
+          {
+            key: "sub2",
+            label: <Link to="/admin/postCategories/add">Add Post Category</Link>,
+          },
+        ],
+      });
+      menuItems.splice(1, 0, {
+        key: "4",
+        icon: <AppstoreOutlined />,
         label: "Account",
         children: [
           {
@@ -66,7 +81,7 @@ const AdminLayout = () => {
         ],
       });
       menuItems.splice(1, 0, {
-        key: "4",
+        key: "5",
         icon: <AppstoreOutlined />,
         label: "Report",
         children: [
@@ -86,7 +101,6 @@ const AdminLayout = () => {
               </Link>
             ),
           },
-
           {
             key: "sub33",
             label: (
@@ -98,6 +112,31 @@ const AdminLayout = () => {
 
         ],
       });
+      menuItems.splice(1, 0, {
+        key: "6",
+        icon: <AppstoreOutlined />,
+        label: "Post",
+        children: [
+          {
+            key: "sub41",
+            label: (
+              <Link to="/admin/posts/?type=processing">
+                List Processing Post
+              </Link>
+            ),
+          },
+          {
+            key: "sub42",
+            label: (
+              <Link to="/admin/posts/?type=approved">
+                List Approved Post
+              </Link>
+            ),
+          },
+        ],
+      });
+
+      
     }
 
     if (role === "STAFF") {
