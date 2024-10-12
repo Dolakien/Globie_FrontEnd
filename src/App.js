@@ -22,6 +22,9 @@ import AddPostCategory from "./pages/Admin/PostCategoryManager/AddPostCategory";
 import Home from "./pages/Home/Home";
 import { default as ClientProductList } from "./pages/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
+import ProfileLayout from "./layouts/ProfileLayout/ProfileLayout";
+import ProfileOverview from "./pages/Profile/ProfileOverview/ProfileOverview";
+import MyProducts from "./pages/Profile/MyProducts/MyProducts";
 
 const App = () => {
   return (
@@ -35,6 +38,10 @@ const App = () => {
           <Route element={<CreateStore />} path="/create-store" />
           <Route element={<ClientProductList />} path="products" />
           <Route element={<Cart />} path="cart" />
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route index element={<ProfileOverview />} />
+            <Route path="my-products" element={<MyProducts />} />
+          </Route>
         </Route>
 
         {/* auth route */}
