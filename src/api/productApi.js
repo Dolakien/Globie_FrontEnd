@@ -16,6 +16,15 @@ const productApi = {
   updateStatus: (id) => {
     return apiClient.put(`/product/update_status/${id}`);
   },
+  createProduct: (data) => {
+    return apiClient.post("/product/create", data);
+  },
+  uploadImages: (productId, formData) => {
+    return apiClient.post(`/product/uploadImages/${productId}`, formData);
+  },
+  getImageByProductId: (productId) => {
+    return apiClient.get(`/product/all_images_statusTrue/${productId}`);
+  },
 };
 
 export default productApi;

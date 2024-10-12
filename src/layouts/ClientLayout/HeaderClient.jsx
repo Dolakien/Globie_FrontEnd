@@ -26,7 +26,7 @@ const HeaderClient = () => {
     <>
       <div className="container mx-auto flex items-center justify-between py-6 px-2 gap-6">
         <div className="flex items-center gap-x-6">
-          <Link className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img src="/images/logo.png" alt="Logo" />
             <p className="font-bold text-2xl">GLOBIE</p>
           </Link>

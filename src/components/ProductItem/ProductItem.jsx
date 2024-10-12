@@ -2,8 +2,9 @@ import classNames from "classnames";
 import React from "react";
 import { FaRegHeart, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { formatPrice } from "../../utils/formatPrice";
 
-const ProductItem = ({ className }) => {
+const ProductItem = ({ className, data }) => {
   return (
     <div
       className={classNames(
@@ -13,17 +14,24 @@ const ProductItem = ({ className }) => {
     >
       <div className="relative pt-[100%]">
         <img
-          src="/images/product-image.jpeg"
+          src={data.images?.[0]?.imagePath || "/images/product-image.jpeg"}
           alt="Product img"
           className="block object-cover w-full h-full absolute top-0 right-0 bottom-0 left-0"
         />
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-2">
         <div className="text-left">
-          <Link className="font-bold text-[#262626]">Nvidia RTX 4070</Link>
+          <Link
+            to={`/products/${data.productId}`}
+            className="font-bold text-[#262626]"
+          >
+            {data.productName}
+          </Link>
 
-          <p className="my-2 text-[#555555] text-xs">VGA</p>
+          <p className="my-2 text-[#555555] text-xs">
+            {data.productCategory.categoryName}
+          </p>
         </div>
 
         <FaRegHeart className="cursor-pointer" />
@@ -42,7 +50,9 @@ const ProductItem = ({ className }) => {
       </div>
 
       <div className="flex mt-3 items-center gap-3">
-        <p className="text-[#FF2E00] font-bold text-sm">$69.99</p>
+        <p className="text-[#FF2E00] font-bold text-sm">
+          {formatPrice(data.price)}đ
+        </p>
 
         <p className="text-xs text-[#555555]">$129.99</p>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "./Banner";
 import { Link } from "react-router-dom";
 import FlashSale from "./FlashSale";
@@ -7,18 +7,38 @@ import NewProductPosting from "./NewProductPosting";
 import CategorySection from "./CategorySection";
 import HomeSlider from "./HomeSlider";
 import ContactForm from "../../components/ContactForm/ContactForm";
+import { message } from "antd";
+import categoryApi from "../../api/categoryApi";
 
 const Home = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await categoryApi.getAllCategory();
+      setCategories(res.data?.data);
+    } catch (error) {
+      message.error("Failed to fetch categories");
+    }
+  };
+
   return (
     <>
       <div className="container px-3 mx-auto">
         <div className="flex flex-wrap gap-3">
-          <Link className="text-sm text-[#555555] m-3">Motherboard</Link>
-          <Link className="text-sm text-[#555555] m-3">Motherboard</Link>
-          <Link className="text-sm text-[#555555] m-3">Motherboard</Link>
-          <Link className="text-sm text-[#555555] m-3">Motherboard</Link>
-          <Link className="text-sm text-[#555555] m-3">Motherboard</Link>
-          <Link className="text-sm text-[#555555] m-3">Motherboard</Link>
+          {categories.map((it) => (
+            <Link
+              key={it.productCategoryId}
+              className="text-sm text-[#555555] font-medium m-3 hover:text-orange-500 transition-all"
+              to={`/products/?category=${it.productCategoryId}`}
+            >
+              {it.categoryName}
+            </Link>
+          ))}
         </div>
       </div>
 

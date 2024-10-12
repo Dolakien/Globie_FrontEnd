@@ -1,11 +1,64 @@
-import React, { useState } from "react";
-import { FaCaretDown } from "react-icons/fa";
-import CategoriesListModal from "./CategoriesListModal";
+import React, { useMemo, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import categoryApi from "../../api/categoryApi";
+import { useForm } from "react-hook-form";
+import productApi from "../../api/productApi";
+import { message } from "antd";
 
 const PostProduct = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const { register, handleSubmit, reset } = useForm();
 
-  const onVisible = () => setModalOpen(!modalOpen);
+  const [fileList, setFileList] = useState([]);
+
+  const { data: categories } = useQuery({
+    queryKey: ["CATEGORIES"],
+    queryFn: async () => {
+      const res = await categoryApi.getAllCategory();
+
+      return res.data.data;
+    },
+  });
+
+  const { mutate: onCreateProduct } = useMutation({
+    mutationKey: ["CREATE_PRODUCT"],
+    mutationFn: async (data) => {
+      const res = await productApi.createProduct(data);
+
+      const formData = new FormData();
+      Array.from(fileList).forEach((file) => formData.append("files", file));
+      await productApi.uploadImages(res.data.data.productId, formData);
+
+      return res;
+    },
+    onSuccess: () => {
+      message.success("Create product successfully");
+      reset();
+      setFileList([]);
+    },
+    onError: () => {
+      message.error("An error occurred, please try again");
+    },
+  });
+
+  const onFileChange = (e) => {
+    const files = e.target.files;
+    setFileList(files);
+  };
+
+  const previewImages = useMemo(() => {
+    if (!fileList) return [];
+
+    return Array.from(fileList).map((it) => URL.createObjectURL(it));
+  }, [fileList]);
+
+  const onSubmit = (values) => {
+    if (fileList.length === 0) {
+      message.error("Please select at least 1 photo");
+      return;
+    }
+
+    onCreateProduct(values);
+  };
 
   return (
     <>
@@ -22,23 +75,54 @@ const PostProduct = () => {
               <img src="/images/camera.png" alt="Camera icon" />
             </label>
 
-            <input type="file" name="" id="file" hidden />
+            <input
+              type="file"
+              name=""
+              id="file"
+              hidden
+              onChange={onFileChange}
+              multiple
+            />
+
+            <div className="mt-4 flex gap-2 flex-wrap">
+              {previewImages?.map((url, index) => (
+                <img
+                  alt="Preview"
+                  src={url}
+                  key={index}
+                  className="block w-36 h-36 object-cover"
+                />
+              ))}
+            </div>
           </div>
 
-          <div className="col-span-8">
-            <div
-              onClick={onVisible}
-              className="border cursor-pointer border-[#434343] px-4 py-3 rounded-md mt-10 flex items-center justify-between"
-            >
+          <form onSubmit={handleSubmit(onSubmit)} className="col-span-8">
+            <div className="border cursor-pointer border-[#434343] px-4 py-3 rounded-md mt-10 flex items-center justify-between">
               <div>
                 <p className="text-[#9D9D9D] font-semibold mb-1">
                   Product Listing Categories
                 </p>
 
-                <p className="font-medium">Motherboard</p>
+                <select
+                  {...register("productCategoryId", {
+                    required: "Vui lòng chọn danh mục SP",
+                  })}
+                  id=""
+                  className="outline-none"
+                >
+                  <option value="">Select category</option>
+                  {categories?.map((it) => (
+                    <option
+                      key={it.productCategoryId}
+                      value={it.productCategoryId}
+                    >
+                      {it.categoryName}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <FaCaretDown className="text-3xl" />
+              {/* <FaCaretDown className="text-3xl" /> */}
             </div>
 
             <div className="mt-6">
@@ -48,32 +132,42 @@ const PostProduct = () => {
                 <input
                   type="text"
                   className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
-                  placeholder="Condition"
-                />
-                <input
-                  type="text"
-                  className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
                   placeholder="Brand"
+                  {...register("brand", {
+                    required: true,
+                  })}
                 />
                 <input
                   type="text"
                   className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
-                  placeholder="Color"
-                />
-                <input
-                  type="text"
-                  className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
-                  placeholder="Design"
+                  placeholder="Origin"
+                  {...register("origin", {
+                    required: true,
+                  })}
                 />
                 <input
                   type="text"
                   className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
                   placeholder="Warranty Policy"
+                  {...register("warranty", {
+                    required: true,
+                  })}
                 />
                 <input
-                  type="text"
+                  type="number"
                   className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
                   placeholder="Price"
+                  {...register("price", {
+                    required: true,
+                  })}
+                />
+                <input
+                  type="number"
+                  className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
+                  placeholder="Quantity"
+                  {...register("quantity", {
+                    required: true,
+                  })}
                 />
               </div>
             </div>
@@ -87,11 +181,16 @@ const PostProduct = () => {
                 <input
                   type="text"
                   className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
-                  placeholder="Title"
+                  placeholder="Name"
+                  {...register("productName", {
+                    required: true,
+                  })}
                 />
 
                 <textarea
-                  name=""
+                  {...register("description", {
+                    required: true,
+                  })}
                   id=""
                   className="outline-none p-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
                   placeholder="Description"
@@ -100,7 +199,7 @@ const PostProduct = () => {
               </div>
             </div>
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <p className="font-semibold text-2xl">Seller Information</p>
 
               <div className="flex gap-3 my-3">
@@ -117,18 +216,16 @@ const PostProduct = () => {
                 className="h-10 outline-none px-3 border border-[#434343] rounded-md w-full placeholder:text-[#555555]"
                 placeholder="Address"
               />
-            </div>
+            </div> */}
 
             <div className="text-right mt-6">
               <button className="inline-flex ml-auto items-center bg-orange-500 rounded-md p-3 gap-x-2 text-white text-sm font-semibold">
                 <p>POST PRODUCT</p>
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
-
-      <CategoriesListModal open={modalOpen} onClose={onVisible} />
     </>
   );
 };
