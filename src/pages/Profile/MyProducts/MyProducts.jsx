@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import styles from "./index.module.css";
 import ProductItem from "../../../components/ProductItem/ProductItem";
 
+import { useQuery } from "@tanstack/react-query";
+import productApi from "../../../api/productApi";
+import { Empty } from "antd";
+
 const TABS = [
   {
     id: 1,
@@ -16,6 +20,34 @@ const TABS = [
 
 const MyProducts = () => {
   const [activeTab, setActiveTab] = useState(TABS[0].id);
+
+  const { data } = useQuery({
+    queryKey: ["USER_PRODUCT", activeTab],
+    queryFn: async () => {
+      let products = [];
+      if (activeTab === 1) {
+        const res = await productApi.getMyProcessingProduct();
+
+        products = res.data?.data ?? [];
+      } else {
+        const res = await productApi.getMySellingProduct();
+        products = res.data?.data ?? [];
+      }
+
+      const productImageMap = await Promise.all(
+        products.map(async (it) => {
+          const imageRes = await productApi.getImageByProductId(it.productId);
+
+          return {
+            ...it,
+            images: imageRes.data?.data || [],
+          };
+        })
+      );
+
+      return productImageMap;
+    },
+  });
 
   return (
     <>
@@ -34,19 +66,22 @@ const MyProducts = () => {
           >
             <span>{it.label}</span>
 
-            {activeTab === it.id && (
-              <span className="text-[#ff3c53]"> (1)</span>
+            {activeTab === it.id && data?.length > 0 && (
+              <span className="text-[#ff3c53]"> ({data.length})</span>
             )}
           </p>
         ))}
       </div>
 
-      <div className="grid grid-cols-12 gap-4 m-4">
-        <ProductItem className="col-span-4" />
-        <ProductItem className="col-span-4" />
-        <ProductItem className="col-span-4" />
-        <ProductItem className="col-span-4" />
-      </div>
+      {data?.length > 0 ? (
+        <div className="grid grid-cols-12 gap-4 m-4">
+          {data?.map((it) => (
+            <ProductItem key={it.productId} className="col-span-4" data={it} />
+          ))}
+        </div>
+      ) : (
+        <Empty description="Empty product" className="mt-12" />
+      )}
     </>
   );
 };

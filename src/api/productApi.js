@@ -25,6 +25,18 @@ const productApi = {
   getImageByProductId: (productId) => {
     return apiClient.get(`/product/all_images_statusTrue/${productId}`);
   },
+  getProductDetail: (id) => {
+    return apiClient.get(`/product/detail/${id}`);
+  },
+  getMySellingProduct: () => {
+    return apiClient.get("/product/all_of_user_selling");
+  },
+  getMyProcessingProduct: () => {
+    return apiClient.get("/product/all_of_user_processing");
+  },
+  getMySoldProduct: () => {
+    return apiClient.get("/product/all_of_user_sold");
+  },
 };
 
 export default productApi;
