@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ClientLayout from "./layouts/ClientLayout/ClientLayout";
@@ -17,13 +16,10 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import AccountList from "./pages/Admin/AccountManager/AccountList";
 import AddAccount from "./pages/Admin/AccountManager/AddAccount";
 import ReportList from "./pages/Admin/ReportManager/ReportList";
-import PostList from "./pages/Admin/PostManager/PostList"; 
-import PostCategoryList from "./pages/Admin/PostCategoryManager/PostCategoryList"; 
-import AddPostCategory from "./pages/Admin/PostCategoryManager/AddPostCategory"; 
-
-
-
-
+import PostList from "./pages/Admin/PostManager/PostList";
+import PostCategoryList from "./pages/Admin/PostCategoryManager/PostCategoryList";
+import AddPostCategory from "./pages/Admin/PostCategoryManager/AddPostCategory";
+import Home from "./pages/Home/Home";
 
 const App = () => {
   return (
@@ -61,9 +57,6 @@ const App = () => {
           <Route path="posts" element={<PostList />} />
           <Route path="postCategories" element={<PostCategoryList />} />
           <Route path="postCategories/add" element={<AddPostCategory />} />
-
-
-
         </Route>
       </Routes>
     </Router>
