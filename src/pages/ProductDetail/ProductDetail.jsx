@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FaAngleRight, FaHeart, FaPlusCircle, FaStar } from "react-icons/fa";
 import {
@@ -15,10 +15,16 @@ import { IoIosCall } from "react-icons/io";
 import { useQuery } from "@tanstack/react-query";
 import productApi from "../../api/productApi";
 import { formatPrice } from "../../utils/formatPrice";
-import { Spin } from "antd";
+import { message, Spin } from "antd";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "../../store/cartSlice";
 
 const ProductDetail = () => {
   const { id } = useParams();
+
+  const dispatch = useDispatch();
+
+  const [quantity, setQuantity] = useState(1);
 
   const { data, isFetching } = useQuery({
     queryKey: ["PRODUCT_DETAIL", id],
@@ -36,6 +42,33 @@ const ProductDetail = () => {
       };
     },
   });
+
+  const onIncreaseQnt = () => {
+    const qnt = quantity + 1;
+    if (qnt <= data.quantity) {
+      setQuantity(qnt);
+    }
+  };
+
+  const onDecreaseQnt = () => {
+    const qnt = quantity - 1;
+    qnt > 0 && setQuantity(qnt);
+  };
+
+  const onAddCart = () => {
+    dispatch(
+      addProductToCart({
+        amount: quantity,
+        productId: data.productId,
+        image: data.images[0].imagePath,
+        name: data.productName,
+        price: data.price,
+      })
+    );
+
+    setQuantity(1);
+    message.success("Add product to cart success");
+  };
 
   if (isFetching) {
     return <Spin />;
@@ -105,13 +138,14 @@ const ProductDetail = () => {
             <p>Quantity</p>
 
             <div className="border rounded flex">
-              <FaMinus className="m-3" />
+              <FaMinus className="m-3 cursor-pointer" onClick={onDecreaseQnt} />
               <input
                 type="text"
                 className="w-12 text-center outline-none"
-                value={1}
+                value={quantity}
+                readOnly
               />
-              <FaPlus className="m-3" />
+              <FaPlus className="m-3 cursor-pointer" onClick={onIncreaseQnt} />
             </div>
 
             <p className="font-semibold text-[#555555] text-sm">
@@ -141,7 +175,10 @@ const ProductDetail = () => {
             <button className="w-1/2 h-14 rounded bg-[#4172DC] uppercase text-white">
               Shop now
             </button>
-            <button className="w-1/2 h-14 rounded uppercase flex gap-x-2 items-center justify-center border border-[#434343] text-[#434343]">
+            <button
+              onClick={onAddCart}
+              className="w-1/2 h-14 rounded uppercase flex gap-x-2 items-center justify-center border border-[#434343] text-[#434343]"
+            >
               <LuShoppingCart className="text-xl" />
               <p>Add to basket</p>
             </button>

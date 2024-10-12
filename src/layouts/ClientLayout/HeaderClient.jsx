@@ -9,15 +9,22 @@ import {
   FaRegHeart,
   FaRegUser,
   FaRegEdit,
+  FaShoppingCart,
 } from "react-icons/fa";
 import { CiBoxList } from "react-icons/ci";
 import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
+import { useDispatch } from "react-redux";
+import { removeCart } from "../../store/cartSlice";
 
 const HeaderClient = () => {
+  const dispatch = useDispatch();
+
   const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
   const role = localStorage.getItem(USER_ROLE_STORAGE_KEY);
 
   const onSignOut = () => {
+    dispatch(removeCart());
+
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     localStorage.removeItem(USER_ROLE_STORAGE_KEY);
     window.location.href = "/login";
@@ -96,6 +103,10 @@ const HeaderClient = () => {
 
             {isLogged ? (
               <>
+                <Link to="/cart">
+                  <FaShoppingCart className="text-xl" />
+                </Link>
+
                 <Link to="/profile">
                   <FaRegUser className="text-xl" />
                 </Link>
