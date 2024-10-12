@@ -20,17 +20,21 @@ import PostList from "./pages/Admin/PostManager/PostList";
 import PostCategoryList from "./pages/Admin/PostCategoryManager/PostCategoryList";
 import AddPostCategory from "./pages/Admin/PostCategoryManager/AddPostCategory";
 import Home from "./pages/Home/Home";
+import { default as ClientProductList } from "./pages/ProductList/ProductList";
+import Cart from "./pages/Cart/Cart";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route element={<ClientLayout />}>
+        <Route element={<ClientLayout />} path="/">
           <Route element={<Home />} path="/" />
           <Route element={<ProductDetail />} path="/products/:id" />
           <Route element={<BuildPc />} path="/build-pc" />
           <Route element={<PostProduct />} path="/post-product" />
           <Route element={<CreateStore />} path="/create-store" />
+          <Route element={<ClientProductList />} path="products" />
+          <Route element={<Cart />} path="cart" />
         </Route>
 
         {/* auth route */}

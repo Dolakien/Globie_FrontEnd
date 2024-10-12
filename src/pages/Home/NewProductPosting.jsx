@@ -1,50 +1,7 @@
 import React from "react";
-import { FaAngleRight, FaRegHeart, FaStar } from "react-icons/fa";
+import { FaAngleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
-const FlashSaleCard = () => {
-  return (
-    <div className="col-span-3 shadow-[0px_0px_12px_0px_#0000001A] rounded-lg px-3 py-4 text-center">
-      <div className="relative pt-[100%]">
-        <img
-          src="/images/product-image.jpeg"
-          alt="Product img"
-          className="block object-cover w-full h-full absolute top-0 right-0 bottom-0 left-0"
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="text-left">
-          <Link className="font-bold text-[#262626]">Nvidia RTX 4070</Link>
-
-          <p className="my-2 text-[#555555] text-xs">VGA</p>
-        </div>
-
-        <FaRegHeart className="cursor-pointer" />
-      </div>
-
-      <div className="flex items-center gap-1">
-        <div className="flex items-center">
-          <FaStar className="text-xs text-[#FFC000]" />
-          <FaStar className="text-xs text-[#FFC000]" />
-          <FaStar className="text-xs text-[#FFC000]" />
-          <FaStar className="text-xs text-[#FFC000]" />
-          <FaStar className="text-xs text-[#FFC000]" />
-        </div>
-
-        <p className="text-xs text-[#555555]">(54)</p>
-      </div>
-
-      <div className="flex mt-3 items-center gap-3">
-        <p className="text-[#FF2E00] font-bold text-sm">$69.99</p>
-
-        <p className="text-xs text-[#555555]">$129.99</p>
-
-        <p className="font-semibold text-xs text-[#FF2E00]">-40%</p>
-      </div>
-    </div>
-  );
-};
+import ProductItem from "../../components/ProductItem/ProductItem";
 
 const NewProductPosting = () => {
   return (
@@ -60,10 +17,10 @@ const NewProductPosting = () => {
       </div>
 
       <div className="mt-3 grid grid-cols-12 gap-4">
-        <FlashSaleCard />
-        <FlashSaleCard />
-        <FlashSaleCard />
-        <FlashSaleCard />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
       </div>
     </div>
   );
