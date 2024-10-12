@@ -25,6 +25,7 @@ import Cart from "./pages/Cart/Cart";
 import ProfileLayout from "./layouts/ProfileLayout/ProfileLayout";
 import ProfileOverview from "./pages/Profile/ProfileOverview/ProfileOverview";
 import MyProducts from "./pages/Profile/MyProducts/MyProducts";
+import EditProduct from "./pages/EditProduct/EditProduct";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<ProfileOverview />} />
             <Route path="my-products" element={<MyProducts />} />
+            <Route path="my-products/:id/edit" element={<EditProduct />} />
           </Route>
         </Route>
 

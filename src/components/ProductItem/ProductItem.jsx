@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import React from "react";
-import { FaRegHeart, FaStar } from "react-icons/fa";
+import { FaRegEdit, FaRegHeart, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../../utils/formatPrice";
 
-const ProductItem = ({ className, data }) => {
+const ProductItem = ({ className, data, editable }) => {
   return (
     <div
       className={classNames(
@@ -58,6 +58,15 @@ const ProductItem = ({ className, data }) => {
 
         <p className="font-semibold text-xs text-[#FF2E00]">-40%</p>
       </div>
+
+      {editable && (
+        <Link
+          to={`/profile/my-products/${data.productId}/edit`}
+          className="mt-3 flex justify-center bg-orange-500 rounded-lg py-2.5 text-white"
+        >
+          <FaRegEdit className="text-lg" />
+        </Link>
+      )}
     </div>
   );
 };

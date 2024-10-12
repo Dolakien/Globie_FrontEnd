@@ -37,6 +37,15 @@ const productApi = {
   getMySoldProduct: () => {
     return apiClient.get("/product/all_of_user_sold");
   },
+  getProductByCategory: (categoryId) => {
+    return apiClient.get(`/product/category/${categoryId}`);
+  },
+  updateProduct: (productId, data) => {
+    return apiClient.put(`/product/update/${productId}`, data);
+  },
+  deleteProductImage: (imageCode) => {
+    return apiClient.delete(`/product/deleteImage/${imageCode}`);
+  },
 };
 
 export default productApi;

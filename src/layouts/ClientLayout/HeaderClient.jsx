@@ -15,6 +15,7 @@ import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
 
 const HeaderClient = () => {
   const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
+  const role = localStorage.getItem(USER_ROLE_STORAGE_KEY);
 
   const onSignOut = () => {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
@@ -89,26 +90,33 @@ const HeaderClient = () => {
             </select>
           </div>
 
-          <div className="ml-auto flex items-center gap-x-3">
+          <div className="ml-auto flex items-center gap-x-5">
             <FaRegHeart className="text-xl" />
             <FaRegBell className="text-xl" />
-            <FaRegUser className="text-xl" />
 
             {isLogged ? (
-              <p onClick={onSignOut} className="cursor-pointer">
-                Đăng xuất
-              </p>
+              <>
+                <Link to="/profile">
+                  <FaRegUser className="text-xl" />
+                </Link>
+
+                <p onClick={onSignOut} className="cursor-pointer">
+                  Đăng xuất
+                </p>
+              </>
             ) : (
               <Link to="/login">Đăng nhập</Link>
             )}
 
-            <Link
-              to="/post-product"
-              className="flex items-center bg-orange-500 rounded-md p-3 gap-x-2 text-white text-sm font-semibold"
-            >
-              <FaRegEdit className="text-lg" />
-              <p>POST PRODUCT</p>
-            </Link>
+            {isLogged && ["USER", "STOREKEEPER"].includes(role) && (
+              <Link
+                to="/post-product"
+                className="flex items-center bg-orange-500 rounded-md p-3 gap-x-2 text-white text-sm font-semibold"
+              >
+                <FaRegEdit className="text-lg" />
+                <p>POST PRODUCT</p>
+              </Link>
+            )}
           </div>
         </div>
       </div>

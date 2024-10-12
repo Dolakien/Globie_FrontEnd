@@ -71,7 +71,12 @@ const ProfileOverview = () => {
       {data?.length > 0 ? (
         <div className="grid grid-cols-12 gap-4 m-4">
           {data?.map((it) => (
-            <ProductItem key={it.productId} className="col-span-4" data={it} />
+            <ProductItem
+              editable
+              key={it.productId}
+              className="col-span-4"
+              data={it}
+            />
           ))}
         </div>
       ) : (
