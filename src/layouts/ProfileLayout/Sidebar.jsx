@@ -39,7 +39,7 @@ const Sidebar = () => {
         </NavLink>
 
         <NavLink
-          to="/account/orders-history"
+          to="/profile/orders-history"
           className="flex items-center py-3 px-5 gap-x-3 text-[#111] hover:text-[#f97316] transition-all [&.active]:text-[#f97316]"
         >
           <FaCartShopping />

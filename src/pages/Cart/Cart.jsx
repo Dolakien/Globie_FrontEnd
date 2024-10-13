@@ -125,7 +125,7 @@ const Cart = () => {
     },
     onSuccess: (data) => {
       dispatch(removeCart());
-      window.open(data.paymentUrl, "_blank");
+      window.location.href = data.paymentUrl;
     },
     onError: () => {
       message.error("An error occurred, please try again");

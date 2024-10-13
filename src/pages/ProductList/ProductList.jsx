@@ -37,6 +37,14 @@ const ProductList = () => {
     },
   });
 
+  const renderTitle = () => {
+    if (category && data?.length > 0) {
+      return data[0].productCategory.categoryName;
+    }
+
+    return "Products List";
+  };
+
   if (isLoading || isError) {
     return <Spin />;
   }
@@ -47,12 +55,10 @@ const ProductList = () => {
         <Breadcrumb
           items={[
             {
-              title: <Link>Homepage</Link>,
+              title: <Link to="/">Homepage</Link>,
             },
             {
-              title: category
-                ? data[0].productCategory.categoryName
-                : "Products",
+              title: renderTitle(),
             },
           ]}
         />
@@ -62,7 +68,7 @@ const ProductList = () => {
         <div className="container mx-auto px-3 py-6 flex items-center justify-between">
           <p className="flex items-center gap-x-4">
             <span className="font-bold text-xl text-[#262626]">
-              {category ? data[0].productCategory.categoryName : "Products"}
+              {renderTitle()}
             </span>
 
             <span className="text-[#555555]">{data?.length ?? 0} items</span>

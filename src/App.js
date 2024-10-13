@@ -27,6 +27,7 @@ import ProfileOverview from "./pages/Profile/ProfileOverview/ProfileOverview";
 import MyProducts from "./pages/Profile/MyProducts/MyProducts";
 import EditProduct from "./pages/EditProduct/EditProduct";
 import VNPayReturn from "./pages/VNPayReturn/VNPayReturn";
+import OrdersHistory from "./pages/Profile/OrdersHistory/OrdersHistory";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             <Route index element={<ProfileOverview />} />
             <Route path="my-products" element={<MyProducts />} />
             <Route path="my-products/:id/edit" element={<EditProduct />} />
+            <Route path="orders-history" element={<OrdersHistory />} />
           </Route>
           <Route path="/vnpay-return" element={<VNPayReturn />} />
         </Route>
