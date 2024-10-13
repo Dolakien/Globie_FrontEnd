@@ -3,11 +3,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FaMinus, FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { formatPrice } from "../../utils/formatPrice";
-import { removeProduct, updateQuantity } from "../../store/cartSlice";
+import {
+  removeCart,
+  removeProduct,
+  updateQuantity,
+} from "../../store/cartSlice";
 import classNames from "classnames";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import shippingAddressApi from "../../api/shippingAddressApi";
-import { PAYMENT_METHOD } from "../../constants";
+import { PAYMENT_METHOD, TOKEN_STORAGE_KEY } from "../../constants";
 import paymentApi from "../../api/paymentApi";
 
 const CartRow = ({ data, step }) => {
@@ -86,6 +90,9 @@ const CartRow = ({ data, step }) => {
 };
 
 const Cart = () => {
+  const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
+  const dispatch = useDispatch();
+
   const [step, setStep] = useState("CART");
   const [modalOpen, setModalOpen] = useState(false);
   const [shippingId, setShippingId] = useState();
@@ -99,6 +106,7 @@ const Cart = () => {
 
       return res.data?.data ?? [];
     },
+    enabled: !!isLogged,
   });
 
   useEffect(() => {
@@ -116,8 +124,8 @@ const Cart = () => {
       return res.data.data;
     },
     onSuccess: (data) => {
+      dispatch(removeCart());
       window.open(data.paymentUrl, "_blank");
-      console.log("352 ~ Cart ~ data:", data);
     },
     onError: () => {
       message.error("An error occurred, please try again");

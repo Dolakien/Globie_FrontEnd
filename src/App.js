@@ -26,6 +26,7 @@ import ProfileLayout from "./layouts/ProfileLayout/ProfileLayout";
 import ProfileOverview from "./pages/Profile/ProfileOverview/ProfileOverview";
 import MyProducts from "./pages/Profile/MyProducts/MyProducts";
 import EditProduct from "./pages/EditProduct/EditProduct";
+import VNPayReturn from "./pages/VNPayReturn/VNPayReturn";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="my-products" element={<MyProducts />} />
             <Route path="my-products/:id/edit" element={<EditProduct />} />
           </Route>
+          <Route path="/vnpay-return" element={<VNPayReturn />} />
         </Route>
 
         {/* auth route */}
