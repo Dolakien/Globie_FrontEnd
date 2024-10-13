@@ -25,7 +25,7 @@ const ProfileOverview = () => {
     queryFn: async () => {
       let products = [];
       if (activeTab === 1) {
-        const res = await productApi.getMyProcessingProduct();
+        const res = await productApi.getMySellingProduct();
 
         products = res.data?.data ?? [];
       } else {

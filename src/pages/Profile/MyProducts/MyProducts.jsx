@@ -26,11 +26,11 @@ const MyProducts = () => {
     queryFn: async () => {
       let products = [];
       if (activeTab === 1) {
-        const res = await productApi.getMyProcessingProduct();
+        const res = await productApi.getMySellingProduct();
 
         products = res.data?.data ?? [];
       } else {
-        const res = await productApi.getMySellingProduct();
+        const res = await productApi.getMyProcessingProduct();
         products = res.data?.data ?? [];
       }
 
