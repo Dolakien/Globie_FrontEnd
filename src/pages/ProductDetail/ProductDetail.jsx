@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { FaAngleRight, FaHeart, FaPlusCircle, FaStar } from "react-icons/fa";
 import {
   FaPlus,
@@ -12,48 +12,98 @@ import { LuShoppingCart } from "react-icons/lu";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { MdOutlinePayment } from "react-icons/md";
 import { IoIosCall } from "react-icons/io";
+import { useQuery } from "@tanstack/react-query";
+import productApi from "../../api/productApi";
+import { formatPrice } from "../../utils/formatPrice";
+import { message, Spin } from "antd";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "../../store/cartSlice";
 
 const ProductDetail = () => {
+  const { id } = useParams();
+
+  const dispatch = useDispatch();
+
+  const [quantity, setQuantity] = useState(1);
+
+  const { data, isFetching } = useQuery({
+    queryKey: ["PRODUCT_DETAIL", id],
+    queryFn: async () => {
+      const res = await productApi.getProductDetail(id);
+      const productData = res.data.data;
+
+      const productImage = await productApi.getImageByProductId(
+        productData.productId
+      );
+
+      return {
+        ...productData,
+        images: productImage.data?.data || [],
+      };
+    },
+  });
+
+  const onIncreaseQnt = () => {
+    const qnt = quantity + 1;
+    if (qnt <= data.quantity) {
+      setQuantity(qnt);
+    }
+  };
+
+  const onDecreaseQnt = () => {
+    const qnt = quantity - 1;
+    qnt > 0 && setQuantity(qnt);
+  };
+
+  const onAddCart = () => {
+    dispatch(
+      addProductToCart({
+        amount: quantity,
+        productId: data.productId,
+        image: data.images[0].imagePath,
+        name: data.productName,
+        price: data.price,
+      })
+    );
+
+    setQuantity(1);
+    message.success("Add product to cart success");
+  };
+
+  if (isFetching) {
+    return <Spin />;
+  }
+
   return (
     <div className="container px-3 mx-auto">
       <div className="flex gap-x-2 text-[#555555] items-center mt-12">
         <Link>Homepage</Link>
         <FaAngleRight />
-        <Link>VGA</Link>
+        <Link>{data?.productCategory?.categoryName}</Link>
         <FaAngleRight />
-        <Link>RTX 4060 series </Link>
+        <Link>{data?.productName}</Link>
       </div>
 
       <div className="mt-10 grid grid-cols-12 gap-6 mb-6 items-center">
         <div className="col-span-6 flex">
-          <div className="w-36 flex flex-col gap-y-2">
-            <img
-              src="/images/product-2.png"
-              alt="Product img"
-              className="block w-full"
-            />
-            <img
-              src="/images/product-2.png"
-              alt="Product img"
-              className="block w-full"
-            />
-            <img
-              src="/images/product-2.png"
-              alt="Product img"
-              className="block w-full"
-            />
-            <img
-              src="/images/product-2.png"
-              alt="Product img"
-              className="block w-full"
-            />
-          </div>
+          {data.images.length > 1 && (
+            <div className="w-36 flex flex-col gap-y-2">
+              {data.images.slice(1).map((it, index) => (
+                <img
+                  key={index}
+                  src={it.imagePath}
+                  alt="Product img"
+                  className="block w-full"
+                />
+              ))}
+            </div>
+          )}
 
-          <div className="flex-1">
+          <div className="flex-1 flex">
             <img
-              src="/images/product-1.png"
+              src={data?.images?.[0]?.imagePath}
               alt="Product img"
-              className="block object-contain"
+              className="block object-contain my-auto"
             />
           </div>
         </div>
@@ -61,10 +111,8 @@ const ProductDetail = () => {
         <div className="col-span-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="font-semibold text-xl">
-                 ASUS Dual GeForce RTX 4060 EVO OC Edition 8GB
-              </h2>
-              <p>$345.99</p>
+              <h2 className="font-semibold text-xl"> {data?.productName}</h2>
+              <p>{formatPrice(data?.price)}đ</p>
             </div>
 
             <div className="w-10 h-10 rounded-full border flex items-center justify-center cursor-pointer">
@@ -90,17 +138,18 @@ const ProductDetail = () => {
             <p>Quantity</p>
 
             <div className="border rounded flex">
-              <FaMinus className="m-3" />
+              <FaMinus className="m-3 cursor-pointer" onClick={onDecreaseQnt} />
               <input
                 type="text"
                 className="w-12 text-center outline-none"
-                value={1}
+                value={quantity}
+                readOnly
               />
-              <FaPlus className="m-3" />
+              <FaPlus className="m-3 cursor-pointer" onClick={onIncreaseQnt} />
             </div>
 
             <p className="font-semibold text-[#555555] text-sm">
-              50 available / 104 sold
+              {data.quantity} available
             </p>
           </div>
 
@@ -126,7 +175,10 @@ const ProductDetail = () => {
             <button className="w-1/2 h-14 rounded bg-[#4172DC] uppercase text-white">
               Shop now
             </button>
-            <button className="w-1/2 h-14 rounded uppercase flex gap-x-2 items-center justify-center border border-[#434343] text-[#434343]">
+            <button
+              onClick={onAddCart}
+              className="w-1/2 h-14 rounded uppercase flex gap-x-2 items-center justify-center border border-[#434343] text-[#434343]"
+            >
               <LuShoppingCart className="text-xl" />
               <p>Add to basket</p>
             </button>

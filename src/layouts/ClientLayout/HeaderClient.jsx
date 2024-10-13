@@ -9,14 +9,22 @@ import {
   FaRegHeart,
   FaRegUser,
   FaRegEdit,
+  FaShoppingCart,
 } from "react-icons/fa";
 import { CiBoxList } from "react-icons/ci";
 import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
+import { useDispatch } from "react-redux";
+import { removeCart } from "../../store/cartSlice";
 
 const HeaderClient = () => {
+  const dispatch = useDispatch();
+
   const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
+  const role = localStorage.getItem(USER_ROLE_STORAGE_KEY);
 
   const onSignOut = () => {
+    dispatch(removeCart());
+
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     localStorage.removeItem(USER_ROLE_STORAGE_KEY);
     window.location.href = "/login";
@@ -26,7 +34,7 @@ const HeaderClient = () => {
     <>
       <div className="container mx-auto flex items-center justify-between py-6 px-2 gap-6">
         <div className="flex items-center gap-x-6">
-          <Link className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img src="/images/logo.png" alt="Logo" />
             <p className="font-bold text-2xl">GLOBIE</p>
           </Link>
@@ -89,26 +97,37 @@ const HeaderClient = () => {
             </select>
           </div>
 
-          <div className="ml-auto flex items-center gap-x-3">
+          <div className="ml-auto flex items-center gap-x-5">
             <FaRegHeart className="text-xl" />
             <FaRegBell className="text-xl" />
-            <FaRegUser className="text-xl" />
 
             {isLogged ? (
-              <p onClick={onSignOut} className="cursor-pointer">
-                Đăng xuất
-              </p>
+              <>
+                <Link to="/cart">
+                  <FaShoppingCart className="text-xl" />
+                </Link>
+
+                <Link to="/profile">
+                  <FaRegUser className="text-xl" />
+                </Link>
+
+                <p onClick={onSignOut} className="cursor-pointer">
+                  Đăng xuất
+                </p>
+              </>
             ) : (
               <Link to="/login">Đăng nhập</Link>
             )}
 
-            <Link
-              to="/post-product"
-              className="flex items-center bg-orange-500 rounded-md p-3 gap-x-2 text-white text-sm font-semibold"
-            >
-              <FaRegEdit className="text-lg" />
-              <p>POST PRODUCT</p>
-            </Link>
+            {isLogged && ["USER", "STOREKEEPER"].includes(role) && (
+              <Link
+                to="/post-product"
+                className="flex items-center bg-orange-500 rounded-md p-3 gap-x-2 text-white text-sm font-semibold"
+              >
+                <FaRegEdit className="text-lg" />
+                <p>POST PRODUCT</p>
+              </Link>
+            )}
           </div>
         </div>
       </div>

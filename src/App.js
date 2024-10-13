@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ClientLayout from "./layouts/ClientLayout/ClientLayout";
@@ -17,24 +16,38 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import AccountList from "./pages/Admin/AccountManager/AccountList";
 import AddAccount from "./pages/Admin/AccountManager/AddAccount";
 import ReportList from "./pages/Admin/ReportManager/ReportList";
-import PostList from "./pages/Admin/PostManager/PostList"; 
-import PostCategoryList from "./pages/Admin/PostCategoryManager/PostCategoryList"; 
-import AddPostCategory from "./pages/Admin/PostCategoryManager/AddPostCategory"; 
-
-
-
-
+import PostList from "./pages/Admin/PostManager/PostList";
+import PostCategoryList from "./pages/Admin/PostCategoryManager/PostCategoryList";
+import AddPostCategory from "./pages/Admin/PostCategoryManager/AddPostCategory";
+import Home from "./pages/Home/Home";
+import { default as ClientProductList } from "./pages/ProductList/ProductList";
+import Cart from "./pages/Cart/Cart";
+import ProfileLayout from "./layouts/ProfileLayout/ProfileLayout";
+import ProfileOverview from "./pages/Profile/ProfileOverview/ProfileOverview";
+import MyProducts from "./pages/Profile/MyProducts/MyProducts";
+import EditProduct from "./pages/EditProduct/EditProduct";
+import VNPayReturn from "./pages/VNPayReturn/VNPayReturn";
+import OrdersHistory from "./pages/Profile/OrdersHistory/OrdersHistory";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route element={<ClientLayout />}>
+        <Route element={<ClientLayout />} path="/">
           <Route element={<Home />} path="/" />
           <Route element={<ProductDetail />} path="/products/:id" />
           <Route element={<BuildPc />} path="/build-pc" />
           <Route element={<PostProduct />} path="/post-product" />
           <Route element={<CreateStore />} path="/create-store" />
+          <Route element={<ClientProductList />} path="products" />
+          <Route element={<Cart />} path="cart" />
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route index element={<ProfileOverview />} />
+            <Route path="my-products" element={<MyProducts />} />
+            <Route path="my-products/:id/edit" element={<EditProduct />} />
+            <Route path="orders-history" element={<OrdersHistory />} />
+          </Route>
+          <Route path="/vnpay-return" element={<VNPayReturn />} />
         </Route>
 
         {/* auth route */}
@@ -61,9 +74,6 @@ const App = () => {
           <Route path="posts" element={<PostList />} />
           <Route path="postCategories" element={<PostCategoryList />} />
           <Route path="postCategories/add" element={<AddPostCategory />} />
-
-
-
         </Route>
       </Routes>
     </Router>
