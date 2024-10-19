@@ -12,23 +12,18 @@ const BarChart = () => {
   const [yearlyRevenue, setYearlyRevenue] = useState(0);
   const [orderCounts, setOrderCounts] = useState({ shipping: 0, pending: 0, cancelled: 0 });
   
-  // State để lưu số lượng người dùng đã đăng ký và chưa xác nhận
   const [userCounts, setUserCounts] = useState({ registered: 0, unverified: 0 });
-
-  // State để lưu số lượng sản phẩm
   const [productCounts, setProductCounts] = useState({ selling: 0, sold: 0, processing: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Lấy doanh thu
         const dailyResponse = await orderApi.countOrderByDay();
         const yearlyResponse = await orderApi.countOrderByYear();
 
         setDailyRevenue(dailyResponse.data.data);
         setYearlyRevenue(yearlyResponse.data.data);
 
-        // Lấy số lượng đơn hàng
         const shippingResponse = await orderApi.countOrderShipping();
         const pendingResponse = await orderApi.countOrderPending();
         const cancelledResponse = await orderApi.countOrderCancel();
@@ -39,7 +34,6 @@ const BarChart = () => {
           cancelled: cancelledResponse.data.data,
         });
 
-        // Lấy số lượng người dùng
         const registeredResponse = await userApi.countUserTrue();
         const unverifiedResponse = await userApi.countUserFalse();
 
@@ -48,7 +42,6 @@ const BarChart = () => {
           unverified: unverifiedResponse.data.data,
         });
 
-        // Lấy số lượng sản phẩm
         const sellingResponse = await productApi.countProductSelling();
         const soldResponse = await productApi.countProductSold();
         const processingResponse = await productApi.countProductProcessing();
@@ -89,7 +82,6 @@ const BarChart = () => {
     ],
   };
 
-  // Dữ liệu cho biểu đồ người dùng
   const userData = {
     labels: ['Người dùng đã đăng ký', 'Người dùng chưa xác nhận'],
     datasets: [
@@ -102,7 +94,7 @@ const BarChart = () => {
   };
 
   const formatNumber = (value) => {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Thêm dấu chấm vào số
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
   };
 
   const revenueOptions = {
@@ -223,14 +215,44 @@ const BarChart = () => {
     },
   };
 
+  const productOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false, // Ẩn legend cho phần này
+      },
+      title: {
+        display: true,
+        text: 'THỐNG KÊ SỐ SẢN PHẨM TRÊN NỀN TẢNG GLOBIE',
+        font: {
+          size: 18,
+        },
+        padding: {
+          top: 10,
+          bottom: 30,
+        },
+      },
+    },
+  };
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh', padding: '20px' }}>
       <div style={{ width: '40%', padding: '20px', border: '2px solid #B7AC9A', borderRadius: '8px', marginRight: '20px' }}>
         <Pie data={orderData} options={orderOptions} />
-        <div style={{ textAlign: 'center', marginTop: '30px' }}>
-          <p>Tổng sản phẩm đang bán: {productCounts.selling}</p>
-          <p>Tổng sản phẩm đã bán: {productCounts.sold}</p>
-          <p>Tổng sản phẩm chờ duyệt: {productCounts.processing}</p>
+        <div style={{ marginTop: '60px' }}>
+          <Bar
+            data={{
+              labels: ['Tổng sản phẩm đang bán', 'Tổng sản phẩm đã bán', 'Tổng sản phẩm chờ duyệt'],
+              datasets: [
+                {
+                  label: 'Số lượng sản phẩm',
+                  data: [productCounts.selling, productCounts.sold, productCounts.processing],
+                  backgroundColor: ['#CFC2BF', '#E2D7D5', '#FF94AB'],
+                },
+              ],
+            }}
+            options={productOptions}
+          />
         </div>
       </div>
       <div style={{ width: '60%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
