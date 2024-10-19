@@ -46,6 +46,16 @@ const productApi = {
   deleteProductImage: (imageCode) => {
     return apiClient.delete(`/product/deleteImage/${imageCode}`);
   },
+  countProductSelling: () => {
+    return apiClient.get("/product/count_selling");
+  },
+  countProductSold: () => {
+    return apiClient.get("/product/count_sold");
+  },
+  countProductProcessing: () => {
+    return apiClient.get("/product/count_processing");
+  },
+  
 };
 
 export default productApi;
