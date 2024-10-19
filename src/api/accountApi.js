@@ -16,7 +16,12 @@ const accountapi = {
   getRole: () => {
     return apiClient.get("/account/role/all");
   },
- 
+  countUserTrue: () => {
+    return apiClient.get("/account/count_true");
+  },
+  countUserFalse: () => {
+    return apiClient.get("/account/count_false");
+  },
 };
 
 export default accountapi;
