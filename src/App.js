@@ -30,8 +30,13 @@ import OrdersHistory from "./pages/Profile/OrdersHistory/OrdersHistory";
 import BlogList from "./pages/BlogList/BlogList";
 import BlogDetail from "./pages/BlogDetail/BlogDetail";
 import PaymentReturn from "./pages/PaymentReturn/PaymentReturn";
+<<<<<<< HEAD
+import AddPost from "./pages/Admin/PostManager/AddPost";
+
+=======
 import UpdateInformation from "./pages/Profile/UpdateInformation/UpdateInformation";
 import Bookmark from "./pages/Profile/Bookmark/Bookmark";
+>>>>>>> 0b81eec588dd297068b129b7686ba60780864153
 
 const App = () => {
   return (
@@ -80,6 +85,7 @@ const App = () => {
           <Route path="accounts/add" element={<AddAccount />} />
           <Route path="reports" element={<ReportList />} />
           <Route path="posts" element={<PostList />} />
+          <Route path="posts/add" element={<AddPost />} />
           <Route path="postCategories" element={<PostCategoryList />} />
           <Route path="postCategories/add" element={<AddPostCategory />} />
         </Route>
