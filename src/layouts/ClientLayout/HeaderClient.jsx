@@ -58,7 +58,7 @@ const HeaderClient = () => {
           <div className="flex items-center gap-x-6">
             <Link>About us</Link>
             <Link to={"/blog"}>Blog</Link>
-            <Link>Build Computer Configuration</Link>
+            <Link to="/build-pc">Build Computer Configuration</Link>
             <Link>Contact us</Link>
             <Link>Help & support</Link>
           </div>

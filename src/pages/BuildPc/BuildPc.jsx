@@ -1,50 +1,12 @@
 import React, { useState } from "react";
-import { IoSendOutline } from "react-icons/io5";
 import { FaCartArrowDown, FaPlus } from "react-icons/fa";
 import classNames from "classnames";
 import ChooseComponentModal from "./ChooseComponentModal";
 import ContactForm from "../../components/ContactForm/ContactForm";
+import { useQuery } from "@tanstack/react-query";
+import categoryApi from "../../api/categoryApi";
 
-const COMPONENTS = [
-  {
-    name: "CPU",
-  },
-  {
-    name: "Motherboard",
-  },
-  {
-    name: "VGA",
-  },
-  {
-    name: "RAM",
-  },
-  {
-    name: "HDD",
-  },
-  {
-    name: "SSD",
-  },
-  {
-    name: "Power Supply",
-  },
-  {
-    name: "Case",
-  },
-  {
-    name: "CPU Cooler",
-  },
-  {
-    name: "Fan",
-  },
-  {
-    name: "Monitor",
-  },
-  {
-    name: "Gear",
-  },
-];
-
-const TableRow = ({ index, name, isOdd, onChoose }) => {
+const TableRow = ({ index, data, isOdd, onChoose }) => {
   return (
     <>
       <tr>
@@ -56,7 +18,7 @@ const TableRow = ({ index, name, isOdd, onChoose }) => {
             }
           )}
         >
-          {index}. {name}
+          {index}. {data.categoryName}
         </td>
 
         <td
@@ -65,11 +27,13 @@ const TableRow = ({ index, name, isOdd, onChoose }) => {
           })}
         >
           <button
-            onClick={onChoose}
+            onClick={() => onChoose(data.productCategoryId)}
             className="bg-[#2D3877] cursor-pointer flex items-center rounded-md h-10 px-3 gap-2 text-white font-medium"
           >
             <FaPlus className="text-sm" />
-            <p className="font-medium text-sm uppercase">CHOOSE {name}</p>
+            <p className="font-medium text-sm uppercase">
+              CHOOSE {data.categoryName}
+            </p>
           </button>
         </td>
       </tr>
@@ -79,8 +43,19 @@ const TableRow = ({ index, name, isOdd, onChoose }) => {
 
 const BuildPc = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState();
 
-  const onOpenModal = () => {
+  const { data: categories } = useQuery({
+    queryKey: ["CATEGORIES"],
+    queryFn: async () => {
+      const res = await categoryApi.getAllCategory();
+
+      return res.data.data;
+    },
+  });
+
+  const onOpenModal = (categoryId) => {
+    setSelectedCategoryId(categoryId);
     setModalOpen(true);
   };
 
@@ -95,10 +70,10 @@ const BuildPc = () => {
 
         <table className="w-full my-10">
           <tbody>
-            {COMPONENTS.map((it, index) => (
+            {categories?.map((it, index) => (
               <TableRow
                 index={index + 1}
-                name={it.name}
+                data={it}
                 isOdd={index % 2 === 0}
                 key={index}
                 onChoose={onOpenModal}
@@ -115,7 +90,11 @@ const BuildPc = () => {
         <ContactForm />
       </div>
 
-      <ChooseComponentModal open={modalOpen} onClose={onVisible} />
+      <ChooseComponentModal
+        open={modalOpen}
+        onClose={onVisible}
+        categoryId={selectedCategoryId}
+      />
     </>
   );
 };
