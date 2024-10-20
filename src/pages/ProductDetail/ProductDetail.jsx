@@ -54,7 +54,7 @@ const ProductDetail = () => {
       addProductToCart({
         amount: quantity,
         productId: data.productId,
-        image: data.images[0].imagePath,
+        image: data.images?.[0]?.imagePath,
         name: data.productName,
         price: data.price,
       })

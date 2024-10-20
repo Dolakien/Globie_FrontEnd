@@ -8,8 +8,6 @@ import classNames from "classnames";
 import "./index.css";
 
 const ReviewList = ({ data = [] }) => {
-  console.log("352 ~ ReviewList ~ data:", data);
-
   if (data.length === 0) {
     return <Empty />;
   }

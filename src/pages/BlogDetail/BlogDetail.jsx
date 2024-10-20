@@ -45,8 +45,6 @@ const BlogDetail = () => {
     },
   });
 
-  console.log(comments);
-
   const commentMutation = useMutation({
     mutationKey: ["ADD_POST_COMMENT"],
     mutationFn: (content) => {
