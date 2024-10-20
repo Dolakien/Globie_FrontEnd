@@ -6,7 +6,6 @@ import {
   FaFacebookF,
   FaRegBell,
   FaTelegramPlane,
-  FaRegHeart,
   FaRegUser,
   FaRegEdit,
   FaShoppingCart,
@@ -98,7 +97,7 @@ const HeaderClient = () => {
           </div>
 
           <div className="ml-auto flex items-center gap-x-5">
-            <FaRegHeart className="text-xl" />
+            {/* <FaRegHeart className="text-xl" /> */}
             <FaRegBell className="text-xl" />
 
             {isLogged ? (
