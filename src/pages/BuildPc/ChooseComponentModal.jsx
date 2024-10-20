@@ -1,7 +1,11 @@
 import React from "react";
 import Modal from "../../components/Modal/Modal";
+import { useQuery } from "@tanstack/react-query";
+import productApi from "../../api/productApi";
+import { formatPrice } from "../../utils/formatPrice";
+import { Empty } from "antd";
 
-const ProductSearchItem = () => {
+const ProductSearchItem = ({ data }) => {
   return (
     <div className="py-3 [&:not(:last-child)]:border-b border-dashed flex items-center gap-3">
       <div className="w-24 h-24 rounded-lg border">
@@ -13,12 +17,11 @@ const ProductSearchItem = () => {
       </div>
 
       <div className="text-sm">
-        <p>Mainboard ASUS PRIME A320M-K</p>
-        <p>SKY: 8888</p>
+        <p>{data?.productName}</p>
       </div>
 
       <div className="ml-auto flex items-center gap-4">
-        <p className="font-semibold">1.899.999đ</p>
+        <p className="font-semibold">{formatPrice(data?.price)}đ</p>
 
         <button className="px-3 py-0.5 rounded border border-[#434343] text-[#434343] text-sm cursor-pointer font-medium">
           Buy
@@ -28,7 +31,17 @@ const ProductSearchItem = () => {
   );
 };
 
-const ChooseComponentModal = ({ open, onClose }) => {
+const ChooseComponentModal = ({ open, onClose, categoryId }) => {
+  const { data: products } = useQuery({
+    queryKey: ["PRODUCT_RELATED", categoryId],
+    queryFn: async () => {
+      const res = await productApi.getProductByCategory(categoryId);
+
+      return res.data.data;
+    },
+    enabled: open,
+  });
+
   return (
     <Modal title="Filter" open={open} onClose={onClose}>
       <div className="grid grid-cols-12 gap-3">
@@ -78,10 +91,11 @@ const ChooseComponentModal = ({ open, onClose }) => {
       </div>
 
       <div className="mt-4">
-        <ProductSearchItem />
-        <ProductSearchItem />
-        <ProductSearchItem />
-        <ProductSearchItem />
+        {products?.map((it) => (
+          <ProductSearchItem key={it.productId} data={it} />
+        ))}
+
+        {products?.length === 0 && <Empty className="mt-10" />}
       </div>
     </Modal>
   );
