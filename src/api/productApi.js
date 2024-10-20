@@ -55,6 +55,11 @@ const productApi = {
   countProductProcessing: () => {
     return apiClient.get("/product/count_processing");
   },
+  filterBuildPc: (params) => {
+    return apiClient.get("/product/filter", {
+      params,
+    });
+  },
   
 };
 
