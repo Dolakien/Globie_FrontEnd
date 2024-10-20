@@ -12,7 +12,7 @@ const TAB = {
 };
 
 const C = {
-  [TAB.STORE]: RatingTab,
+  [TAB.STORE]: StoreTab,
   [TAB.INFORMATION]: ProductInformation,
   [TAB.REVIEW]: RatingTab,
 };
