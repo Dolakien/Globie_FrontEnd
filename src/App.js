@@ -31,6 +31,7 @@ import BlogList from "./pages/BlogList/BlogList";
 import BlogDetail from "./pages/BlogDetail/BlogDetail";
 import PaymentReturn from "./pages/PaymentReturn/PaymentReturn";
 import UpdateInformation from "./pages/Profile/UpdateInformation/UpdateInformation";
+import Bookmark from "./pages/Profile/Bookmark/Bookmark";
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="information" element={<UpdateInformation />} />
             <Route path="my-products" element={<MyProducts />} />
             <Route path="my-products/:id/edit" element={<EditProduct />} />
+            <Route path="bookmark" element={<Bookmark />} />
             <Route path="orders-history" element={<OrdersHistory />} />
           </Route>
           <Route path="/payment-return" element={<PaymentReturn />} />

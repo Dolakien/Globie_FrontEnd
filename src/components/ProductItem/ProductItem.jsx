@@ -1,10 +1,76 @@
 import classNames from "classnames";
-import React from "react";
-import { FaRegEdit, FaRegHeart, FaStar } from "react-icons/fa";
+import React, { useMemo } from "react";
+import { FaHeart, FaRegEdit, FaRegHeart, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../../utils/formatPrice";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import bookmarkApi from "../../api/bookmarkApi";
+import productApi from "../../api/productApi";
+import { TOKEN_STORAGE_KEY } from "../../constants";
+import { message } from "antd";
 
 const ProductItem = ({ className, data, editable }) => {
+  const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+  const { data: productBookmark, refetch } = useQuery({
+    queryKey: ["USER_BOOKMARK"],
+    queryFn: async () => {
+      const res = await bookmarkApi.getAllBookmark();
+
+      const products = res.data?.data ?? [];
+
+      const productImageMap = await Promise.all(
+        products.map(async (it) => {
+          const imageRes = await productApi.getImageByProductId(
+            it.product.productId
+          );
+
+          return {
+            ...it.product,
+            images: imageRes.data?.data || [],
+          };
+        })
+      );
+
+      return productImageMap;
+    },
+    enabled: !!isLogged,
+  });
+
+  console.log(productBookmark);
+
+  const { mutate: onAddBookmark } = useMutation({
+    mutationKey: ["ADD_BOOKMARK"],
+    mutationFn: (productId) => {
+      return bookmarkApi.addProduct(productId);
+    },
+    onSuccess: refetch,
+  });
+
+  const { mutate: onRemoveBookmark } = useMutation({
+    mutationKey: ["REMOVE_BOOKMARK"],
+    mutationFn: (productId) => {
+      return bookmarkApi.removeProduct(productId);
+    },
+    onSuccess: refetch,
+  });
+
+  const isBookmarked = useMemo(() => {
+    return productBookmark?.some((x) => x.productId === data.productId);
+  }, [productBookmark, data.productId]);
+
+  const onToggleBookmark = () => {
+    if (!isLogged) {
+      return message.info("Pleas login to use this feature");
+    }
+
+    if (isBookmarked) {
+      onRemoveBookmark(data.productId);
+    } else {
+      onAddBookmark(data.productId);
+    }
+  };
+
   return (
     <div
       className={classNames(
@@ -34,7 +100,9 @@ const ProductItem = ({ className, data, editable }) => {
           </p>
         </div>
 
-        <FaRegHeart className="cursor-pointer" />
+        <div className="cursor-pointer" onClick={onToggleBookmark}>
+          {isBookmarked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+        </div>
       </div>
 
       <div className="flex items-center gap-1">
