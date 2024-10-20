@@ -3,23 +3,28 @@ import { NavLink } from "react-router-dom";
 
 import { FaUser, FaSignOutAlt, FaListUl } from "react-icons/fa";
 import { FaCartShopping, FaLocationDot } from "react-icons/fa6";
+import useProfile from "../../hooks/useProfile";
 
 const Sidebar = () => {
+  const { data } = useProfile();
+
   return (
     <aside className="bg-white rounded h-full">
       <header className="p-4 flex items-center gap-x-6 border-b border-b-[#CFCFCF] mb-1.5">
         <img
-          src="https://picsum.photos/200/200"
+          src={data?.avatar ?? "https://picsum.photos/200/200"}
           alt="Avatar"
           className="w-[48px] h-[48px] rounded-full object-cover"
         />
 
-        <p className="text-[18px] font-semibold text-[#111]">Huỳnh Văn Tường</p>
+        <p className="text-[18px] font-semibold text-[#111]">
+          {data?.fullName ?? "No Name"}
+        </p>
       </header>
 
       <div className="pb-6">
         <NavLink
-          to="/profile"
+          to="/profile/information"
           className="flex items-center py-3 px-5 gap-x-3 text-[#111] hover:text-[#f97316] transition-all [&.active]:text-[#f97316]"
           end
         >

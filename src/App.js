@@ -30,6 +30,7 @@ import OrdersHistory from "./pages/Profile/OrdersHistory/OrdersHistory";
 import BlogList from "./pages/BlogList/BlogList";
 import BlogDetail from "./pages/BlogDetail/BlogDetail";
 import PaymentReturn from "./pages/PaymentReturn/PaymentReturn";
+import UpdateInformation from "./pages/Profile/UpdateInformation/UpdateInformation";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
           <Route element={<Cart />} path="cart" />
           <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<ProfileOverview />} />
+            <Route path="information" element={<UpdateInformation />} />
             <Route path="my-products" element={<MyProducts />} />
             <Route path="my-products/:id/edit" element={<EditProduct />} />
             <Route path="orders-history" element={<OrdersHistory />} />

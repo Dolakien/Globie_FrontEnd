@@ -22,6 +22,12 @@ const accountapi = {
   countUserFalse: () => {
     return apiClient.get("/account/count_false");
   },
+  getProfile: () => {
+    return apiClient.get("/account/my-account");
+  },
+  updateProfile: (username, data) => {
+    return apiClient.put(`/account/update/${username}`, data);
+  },
 };
 
 export default accountapi;
