@@ -28,6 +28,8 @@ import MyProducts from "./pages/Profile/MyProducts/MyProducts";
 import EditProduct from "./pages/EditProduct/EditProduct";
 import VNPayReturn from "./pages/VNPayReturn/VNPayReturn";
 import OrdersHistory from "./pages/Profile/OrdersHistory/OrdersHistory";
+import BlogList from "./pages/BlogList/BlogList";
+import BlogDetail from "./pages/BlogDetail/BlogDetail";
 
 const App = () => {
   return (
@@ -48,6 +50,8 @@ const App = () => {
             <Route path="orders-history" element={<OrdersHistory />} />
           </Route>
           <Route path="/vnpay-return" element={<VNPayReturn />} />
+          <Route path="/blog" element={<BlogList />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
         </Route>
 
         {/* auth route */}
