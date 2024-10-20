@@ -37,10 +37,8 @@ const StoreTab = ({ data: { user: store } }) => {
           </div>
         </div>
 
-        <div className="flex gap-3 mt-4">
-          <p className="px-4 min-w-56 h-12 cursor-pointer bg-[#FF7A00] text-white text-lg font-medium rounded-md flex items-center justify-center">
-            Follow
-          </p>
+        <div className="flex gap-1 mt-4">
+
           <p className="px-4 min-w-56 h-12 cursor-pointer bg-[#FF7A00] text-white text-lg font-medium rounded-md flex items-center justify-center">
             View store
           </p>
