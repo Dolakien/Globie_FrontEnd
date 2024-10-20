@@ -87,7 +87,7 @@ const OrdersHistory = () => {
         dataIndex: "paymentMethodOrder",
         render: (val) => {
           if (val === PAYMENT_METHOD.ELECTRONIC_PAYMENT) {
-            return "VNPay";
+            return "PAYOS";
           }
 
           return "COD";

@@ -15,8 +15,6 @@ const ProductRelated = ({ categoryId }) => {
     },
   });
 
-  console.log("352 ~ ProductRelated ~ productRelated:", productRelated);
-
   return (
     <div className="mt-2 pt-6 border-t">
       <p className="uppercase text-[#262626] font-medium">

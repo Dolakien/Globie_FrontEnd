@@ -4,28 +4,26 @@ import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import paymentApi from "../../api/paymentApi";
 
-const VNPayReturn = () => {
+const PaymentReturn = () => {
   const [searchParams] = useSearchParams();
-  const responseCode = searchParams.get("vnp_ResponseCode");
+  const status = searchParams.get("status");
 
   const navigate = useNavigate();
 
   const { mutate } = useMutation({
-    mutationKey: ["VNPAY_CALLBACK"],
-    mutationFn: (params) => paymentApi.vnpayCallBack(params),
+    mutationKey: ["PAYOS_CALLBACK"],
+    mutationFn: (params) => paymentApi.payOsCallBack(params),
   });
 
   useEffect(() => {
-    if (responseCode === "00") {
-      let params = {};
-      for (let [key, value] of searchParams.entries()) {
-        params[key] = value;
-      }
-      mutate(params);
+    let params = {};
+    for (let [key, value] of searchParams.entries()) {
+      params[key] = value;
     }
-  }, [responseCode]);
+    mutate(params);
+  }, [status]);
 
-  if (responseCode && responseCode === "00") {
+  if (status && status === "PAID") {
     return (
       <Result
         title="Payment successfully"
@@ -41,7 +39,7 @@ const VNPayReturn = () => {
     );
   }
 
-  if (responseCode && responseCode !== "00") {
+  if (status && status !== "PAID") {
     return (
       <Result
         title="Payment failed"
@@ -65,4 +63,4 @@ const VNPayReturn = () => {
   );
 };
 
-export default VNPayReturn;
+export default PaymentReturn;
