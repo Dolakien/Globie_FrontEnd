@@ -10,11 +10,14 @@ const brands = ["Intel", "AMD", "NVIDIA", "ASUS", "Gigabyte", "MSI", "Corsair", 
 const origins = ["USA", "China", "Taiwan", "Germany", "Japan", "Korea", "Canada", "UK", "France", "India"];
 
 const ProductSearchItem = ({ data, onBuyClick }) => {
+  // Lấy ảnh đầu tiên từ danh sách images nếu có, nếu không thì dùng ảnh mặc định
+  const productImage = data?.images?.[0]?.imagePath || "/images/default-product.png";
+
   return (
     <div className="py-3 [&:not(:last-child)]:border-b border-dashed flex items-center gap-3">
       <div className="w-24 h-24 rounded-lg border">
         <img
-          src="/images/product-1.png"
+          src={productImage}
           alt="Product"
           className="block w-full h-full object-cover"
         />
@@ -42,6 +45,7 @@ const ChooseComponentModal = ({ open, onClose, categoryId, onProductSelect }) =>
   const [maxPrice, setMaxPrice] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Query để lấy sản phẩm và ảnh
   const { data: products, isLoading, error } = useQuery({
     queryKey: ["PRODUCT_RELATED", categoryId, selectedBrand, selectedOrigin, minPrice, maxPrice, searchTerm],
     queryFn: async () => {
@@ -51,25 +55,34 @@ const ChooseComponentModal = ({ open, onClose, categoryId, onProductSelect }) =>
         minPrice: minPrice || undefined,
         maxPrice: maxPrice || undefined,
         search: searchTerm || undefined,
-        categoryId: categoryId || undefined, // Thêm categoryId vào params
+        categoryId: categoryId || undefined,
       };
 
       const res = await productApi.filterBuildPc(params);
+      const products = res.data.data;
 
-      // Log phản hồi từ API
-      console.log("API Response:", res.data);
+      // Lấy ảnh cho mỗi sản phẩm
+      const productWithImages = await Promise.all(
+        products.map(async (product) => {
+          const imageRes = await productApi.getImageByProductId(product.productId);
+          return {
+            ...product,
+            images: imageRes.data?.data || [], // Thêm mảng ảnh vào sản phẩm
+          };
+        })
+      );
 
-      return res.data.data;
+      return productWithImages;
     },
     enabled: open,
   });
 
   const handleBuyClick = (product) => {
-    onProductSelect(product); // Gọi hàm truyền vào để thêm sản phẩm
-    onClose(); // Đóng modal sau khi thêm sản phẩm
+    onProductSelect(product); // Thêm sản phẩm vào danh sách đã chọn
+    onClose(); // Đóng modal
   };
 
-  // Kiểm tra lỗi
+  // Xử lý lỗi nếu có
   if (error) {
     return <div>Error loading products: {error.message}</div>;
   }
