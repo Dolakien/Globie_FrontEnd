@@ -30,13 +30,10 @@ import OrdersHistory from "./pages/Profile/OrdersHistory/OrdersHistory";
 import BlogList from "./pages/BlogList/BlogList";
 import BlogDetail from "./pages/BlogDetail/BlogDetail";
 import PaymentReturn from "./pages/PaymentReturn/PaymentReturn";
-<<<<<<< HEAD
 import AddPost from "./pages/Admin/PostManager/AddPost";
-
-=======
 import UpdateInformation from "./pages/Profile/UpdateInformation/UpdateInformation";
 import Bookmark from "./pages/Profile/Bookmark/Bookmark";
->>>>>>> 0b81eec588dd297068b129b7686ba60780864153
+import ProfileAddress from "./pages/Profile/ProfileAddress";
 
 const App = () => {
   return (
@@ -57,6 +54,7 @@ const App = () => {
             <Route path="my-products/:id/edit" element={<EditProduct />} />
             <Route path="bookmark" element={<Bookmark />} />
             <Route path="orders-history" element={<OrdersHistory />} />
+            <Route path="address" element={<ProfileAddress />} />
           </Route>
           <Route path="/payment-return" element={<PaymentReturn />} />
           <Route path="/blog" element={<BlogList />} />
