@@ -32,6 +32,7 @@ import BlogDetail from "./pages/BlogDetail/BlogDetail";
 import PaymentReturn from "./pages/PaymentReturn/PaymentReturn";
 import UpdateInformation from "./pages/Profile/UpdateInformation/UpdateInformation";
 import Bookmark from "./pages/Profile/Bookmark/Bookmark";
+import ProfileAddress from "./pages/Profile/ProfileAddress";
 
 const App = () => {
   return (
@@ -52,6 +53,7 @@ const App = () => {
             <Route path="my-products/:id/edit" element={<EditProduct />} />
             <Route path="bookmark" element={<Bookmark />} />
             <Route path="orders-history" element={<OrdersHistory />} />
+            <Route path="address" element={<ProfileAddress />} />
           </Route>
           <Route path="/payment-return" element={<PaymentReturn />} />
           <Route path="/blog" element={<BlogList />} />
