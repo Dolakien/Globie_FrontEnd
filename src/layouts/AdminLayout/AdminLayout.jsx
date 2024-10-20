@@ -175,7 +175,7 @@ const AdminLayout = () => {
         children: [
           {
             key: "sub41",
-            label: <Link to="/admin/reports/add">Add Post</Link>,
+            label: <Link to="/admin/posts/add">Add Post</Link>,
           },
         ],
       });
