@@ -106,25 +106,10 @@ const ProductDetail = () => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-semibold text-xl"> {data?.productName}</h2>
-              <p>{formatPrice(data?.price)}đ</p>
             </div>
 
             <div className="w-10 h-10 rounded-full border flex items-center justify-center cursor-pointer">
               <FaHeart className="text-gray-400 text-xl" />
-            </div>
-          </div>
-
-          <div className="mt-8 gap-5 flex items-center">
-            <p>Shipping</p>
-
-            <div>
-              <select name="" id="" className="font-medium">
-                <option value="">Free Shipping to Victoria teritory</option>
-              </select>
-
-              <p className="text-[#9D9D9D] text-sm">
-                Delivery Time: 14–17 days
-              </p>
             </div>
           </div>
 
@@ -149,24 +134,27 @@ const ProductDetail = () => {
 
           <div className="mt-5 bg-[#E9E9E9] rounded p-8">
             <p className="text-lg text-[#262626] font-semibold pb-3 border-b border-b-[#C4C4C4]">
-              $79.98
+            <p>{formatPrice(data?.price)}đ</p>
             </p>
 
             <div className="mt-4 flex items-center gap-3">
               <FaPlusCircle className="text-xl" />
 
               <p className="flex-1 text-sm">
-                <strong>Add shipping insurance for $9 </strong>
+                <strong>Kiểm tra kĩ hàng trước khi nhận </strong>
                 <span>
-                  (declared value only if the package gets lost, stolen or
-                  damaged.)
+                  (Hàng hoá có bị thiếu hay hư hỏng.)
                 </span>
               </p>
             </div>
           </div>
 
           <div className="mt-8 flex gap-3">
-            <button className="w-1/2 h-14 rounded bg-[#4172DC] uppercase text-white">
+            <button className="w-1/2 h-14 rounded bg-[#FAD06C] uppercase text-white"
+                          onClick={() => {
+                            onAddCart(); // Gọi hàm onAddCart
+                            window.location.href = "http://localhost:3000/cart"; // Điều hướng tới trang cart
+                          }}>
               Shop now
             </button>
             <button
@@ -176,7 +164,7 @@ const ProductDetail = () => {
               <LuShoppingCart className="text-xl" />
               <p>Add to basket</p>
             </button>
-          </div>
+          </div>  
         </div>
       </div>
 

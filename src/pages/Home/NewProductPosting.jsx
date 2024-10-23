@@ -39,8 +39,8 @@ const NewProductPosting = () => {
       </div>
 
       <div className="mt-3 grid grid-cols-12 gap-4">
-        {data?.slice(0, 4).map((it) => (
-          <ProductItem key={it.productId} data={it} />
+        {data?.map((it) => (
+          <ProductItem key={it.productId} data={it} className="col-span-3" />
         ))}
       </div>
     </div>

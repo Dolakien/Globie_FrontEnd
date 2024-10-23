@@ -30,16 +30,11 @@ const StoreTab = ({ data: { user: store } }) => {
               <FaStar className="text-yellow-500 text-xl" />
             </div>
 
-            <div className="flex items-center gap-x-2">
-              <p className="w-2 h-2 bg-green-500 rounded-full"></p>
-              <p className="text-sm text-gray-500">Online 1 hour ago</p>
-            </div>
           </div>
         </div>
 
-        <div className="flex gap-1 mt-4">
-
-          <p className="px-4 min-w-56 h-12 cursor-pointer bg-[#FF7A00] text-white text-lg font-medium rounded-md flex items-center justify-center">
+        <div className="flex gap-3 mt-4">
+          <p className="px-4 min-w-56 h-12 cursor-pointer bg-[#FAD06C] text-white text-lg font-medium rounded-md flex items-center justify-center">
             View store
           </p>
         </div>

@@ -135,6 +135,60 @@ const AdminLayout = () => {
           },
         ],
       });
+      menuItems.splice(1, 0, {
+        key: "7",
+        icon: <AppstoreOutlined />,
+        label: "Transaction",
+        children: [
+          {
+            key: "sub51",
+            label: (
+              <Link to="/admin/transactions">
+                List Transaction
+              </Link>
+            ),
+          },
+        ],
+      });
+      menuItems.splice(1, 0, {
+        key: "8",
+        icon: <AppstoreOutlined />,
+        label: "Order",
+        children: [
+          {
+            key: "sub61",
+            label: (
+              <Link to="/admin/orders">
+                List Order
+              </Link>
+            ),
+          },
+          {
+            key: "sub62",
+            label: (
+              <Link to="/admin/orders/?type=shipping">
+                List Successful Order
+              </Link>
+            ),
+          },
+          {
+            key: "sub63",
+            label: (
+              <Link to="/admin/orders/?type=cancelled">
+                List Cancelled Order
+              </Link>
+            ),
+          },
+          {
+            key: "sub64",
+            label: (
+              <Link to="/admin/orders/?type=pending">
+                List Pending Order
+              </Link>
+            ),
+          },
+        ],
+      });
 
       
     }

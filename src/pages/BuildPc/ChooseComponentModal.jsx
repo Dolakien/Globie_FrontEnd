@@ -6,7 +6,10 @@ import { formatPrice } from "../../utils/formatPrice";
 import { Empty } from "antd";
 
 // Mock brands and origins
-const brands = ["Intel", "AMD", "NVIDIA", "ASUS", "Gigabyte", "MSI", "Corsair", "Kingston"];
+const brands = ["Intel", "AMD", "NVIDIA", "ASUS", "Gigabyte", "MSI", "Corsair", "Kingston",
+    "ASRock", "G.Skill", "Crucial", "HyperX", "Patriot", "Samsung", "Western Digital", "Seagate",
+    "EVGA", "Seasonic", "Thermaltake", "Cooler Master", "FSP", "NZXT", "Fractal Design", "be quiet!",
+    "Lian Li", "Phanteks", "InWin", "SilverStone"];
 const origins = ["USA", "China", "Taiwan", "Germany", "Japan", "Korea", "Canada", "UK", "France", "India"];
 
 const ProductSearchItem = ({ data, onBuyClick }) => {

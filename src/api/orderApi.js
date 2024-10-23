@@ -13,6 +13,18 @@ const orderApi = {
   getDeliveredOrders: () => {
     return apiClient.get("/order/all_of_user_delivered");
   },
+  getdOrders: () => {
+    return apiClient.get("/order/all");
+  },
+  getOrdersShipping: () => {
+    return apiClient.get("/order/all_shipping");
+  },
+  getOrdersPending: () => {
+    return apiClient.get("/order/all_pending");
+  },
+  getOrdersCancel: () => {
+    return apiClient.get("/order/all_cancel");
+  },
   countOrderByDay: () => {
     return apiClient.get("/order/count_day");
   },

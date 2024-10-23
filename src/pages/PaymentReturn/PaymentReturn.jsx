@@ -50,7 +50,6 @@ const PaymentReturn = () => {
           <Button onClick={() => navigate("/")} type="primary" key="console">
             Return to homepage
           </Button>,
-          <Button key="buy">Try Again</Button>,
         ]}
       />
     );

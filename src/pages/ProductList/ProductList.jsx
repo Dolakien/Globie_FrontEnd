@@ -1,171 +1,126 @@
-import React, { useState } from "react";
-import Modal from "../../components/Modal/Modal";
+import { Breadcrumb, Empty, Spin } from "antd";
+import React from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import ProductItem from "../../components/ProductItem/ProductItem";
 import { useQuery } from "@tanstack/react-query";
 import productApi from "../../api/productApi";
-import { formatPrice } from "../../utils/formatPrice";
-import { Empty } from "antd";
 
-// Mock brands and origins
-const brands = ["Intel", "AMD", "NVIDIA", "ASUS", "Gigabyte", "MSI", "Corsair", "Kingston"];
-const origins = ["USA", "China", "Taiwan", "Germany", "Japan", "Korea", "Canada", "UK", "France", "India"];
+const ProductList = () => {
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
 
-const ProductSearchItem = ({ data, onBuyClick }) => {
-  return (
-    <div className="py-3 [&:not(:last-child)]:border-b border-dashed flex items-center gap-3">
-      <div className="w-24 h-24 rounded-lg border">
-        <img
-          src={data?.images?.[0] || "/images/default-product.png"} // Use the first image or a default image
-          alt="Product"
-          className="block w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="text-sm">
-        <p>{data?.productName}</p>
-      </div>
-
-      <div className="ml-auto flex items-center gap-4">
-        <p className="font-semibold">{formatPrice(data?.price)}đ</p>
-
-        <button onClick={onBuyClick} className="px-3 py-0.5 rounded border border-[#434343] text-[#434343] text-sm cursor-pointer font-medium">
-          Buy
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const ChooseComponentModal = ({ open, onClose, categoryId, onProductSelect }) => {
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedOrigin, setSelectedOrigin] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const { data: products, isLoading, error } = useQuery({
-    queryKey: ["PRODUCT_RELATED", categoryId, selectedBrand, selectedOrigin, minPrice, maxPrice, searchTerm],
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["PRODUCT_LIST", category],
     queryFn: async () => {
-      const params = {
-        brand: selectedBrand || undefined,
-        origin: selectedOrigin || undefined,
-        minPrice: minPrice || undefined,
-        maxPrice: maxPrice || undefined,
-        search: searchTerm || undefined,
-        categoryId: categoryId || undefined,
-      };
+      try {
+        let products = [];
 
-      const res = await productApi.filterBuildPc(params);
-      const products = res.data.data;
+        if (category) {
+          const res = await productApi.getProductByCategory(category);
+          products = res.data?.data ?? [];
+        } else {
+          const res = await productApi.getAllSellingProduct();
+          products = res.data?.data ?? [];
+        }
 
-      // Fetch images for each product
-      const productWithImages = await Promise.all(
-        products.map(async (product) => {
-          const imageRes = await productApi.getImageByProductId(product.productId);
-          return {
-            ...product,
-            images: imageRes.data?.data || [], // Attach the image array to the product
-          };
-        })
-      );
+        const productImageMap = await Promise.all(
+          products.map(async (it) => {
+            const imageRes = await productApi.getImageByProductId(it.productId);
 
-      return productWithImages;
+            return {
+              ...it,
+              images: imageRes.data?.data || [],
+            };
+          })
+        );
+
+        return productImageMap;
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        throw error;
+      }
     },
-    enabled: open,
   });
 
-  const handleBuyClick = (product) => {
-    onProductSelect(product); // Add product to the selected list
-    onClose(); // Close modal
+  const renderTitle = () => {
+    if (category && data?.length > 0) {
+      return data[0].productCategory.categoryName;
+    }
+
+    return "Products List";
   };
 
-  // Check for error
-  if (error) {
-    return <div>Error loading products: {error.message}</div>;
+  if (isLoading) {
+    return <Spin />;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (
-    <Modal title="Filter" open={open} onClose={onClose}>
-      <div className="grid grid-cols-12 gap-3">
-        {/* Brand Select */}
-        <div className="col-span-4 border border-[#434343] rounded py-4 text-center">
-          <select
-            className="outline-none uppercase"
-            value={selectedBrand}
-            onChange={(e) => setSelectedBrand(e.target.value)}
-          >
-            <option value="">BRANDS</option>
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>
-                {brand}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Origin Select */}
-        <div className="col-span-4 border border-[#434343] rounded py-4 text-center">
-          <select
-            className="outline-none uppercase"
-            value={selectedOrigin}
-            onChange={(e) => setSelectedOrigin(e.target.value)}
-          >
-            <option value="">ORIGIN</option>
-            {origins.map((origin) => (
-              <option key={origin} value={origin}>
-                {origin}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Min Price Input */}
-        <div className="col-span-4 border border-[#434343] rounded py-4 text-center">
-          <input
-            type="number"
-            placeholder="MIN PRICE"
-            className="outline-none w-full text-center"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-          />
-        </div>
-
-        {/* Max Price Input */}
-        <div className="col-span-4 border border-[#434343] rounded py-4 text-center">
-          <input
-            type="number"
-            placeholder="MAX PRICE"
-            className="outline-none w-full text-center"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* Search Input */}
-      <div className="p-3 rounded-2xl border border-[#434343] mt-4">
-        <input
-          type="text"
-          placeholder="Search product"
-          className="outline-none w-full"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+    <>
+      <div className="container px-3 mx-auto my-8">
+        <Breadcrumb
+          items={[
+            {
+              title: <Link to="/">Homepage</Link>,
+            },
+            {
+              title: renderTitle(),
+            },
+          ]}
         />
       </div>
 
-      {/* Product List */}
-      <div className="mt-4">
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : products && products.length > 0 ? (
-          products.map((it) => (
-            <ProductSearchItem key={it.productId} data={it} onBuyClick={() => handleBuyClick(it)} />
-          ))
-        ) : (
-          <Empty className="mt-10" description="No products found" />
+      <div className="bg-[#E9E9E9]">
+        <div className="container mx-auto px-3 py-6 flex items-center justify-between">
+          <p className="flex items-center gap-x-4">
+            <span className="font-bold text-xl text-[#262626]">
+              {renderTitle()}
+            </span>
+
+            <span className="text-[#555555]">{data?.length ?? 0} items</span>
+          </p>
+
+          <select
+            name=""
+            id=""
+            className="rounded px-3 py-2 bg-transparent border border-[#7B7B7B] text-sm text-[#555555]"
+          >
+            <option value="">Sort by order</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-3 py-10">
+        <div className="flex items-center gap-6">
+          <p className="font-bold text-[#FF7A00] border-b-2 border-[#FF7A00]">
+            All
+          </p>
+          <p className="font-bold text-[#7B7B7B] border-b-2 border-b-transparent">
+            Personal
+          </p>
+          <p className="font-bold text-[#7B7B7B] border-b-2 border-b-transparent">
+            Store
+          </p>
+        </div>
+
+        {data && data.length === 0 && <Empty className="my-12" />}
+        {data?.length > 0 && (
+          <div className="grid grid-cols-12 gap-6 mt-8">
+            {data.map((it) => (
+              <ProductItem
+                key={it.productId}
+                className="col-span-4"
+                data={it}
+              />
+            ))}
+          </div>
         )}
       </div>
-    </Modal>
+    </>
   );
 };
 
-export default ChooseComponentModal;
+export default ProductList;
