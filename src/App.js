@@ -12,6 +12,7 @@ import Dashboard from "./pages/Admin/Dashboard/Dashboard";
 import ProductCategoryList from "./pages/Admin/ProductCategoryManager/ProductCategoryList";
 import AddProductCategory from "./pages/Admin/ProductCategoryManager/AddProductCategory";
 import ProductList from "./pages/Admin/ProductManager/ProductList";
+import OrderList from "./pages/Admin/OrderManagement/OrderList.jsx";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import AccountList from "./pages/Admin/AccountManager/AccountList";
 import AddAccount from "./pages/Admin/AccountManager/AddAccount";
@@ -34,6 +35,8 @@ import AddPost from "./pages/Admin/PostManager/AddPost";
 import UpdateInformation from "./pages/Profile/UpdateInformation/UpdateInformation";
 import Bookmark from "./pages/Profile/Bookmark/Bookmark";
 import ProfileAddress from "./pages/Profile/ProfileAddress";
+import Transaction from "./pages/Admin/TransactionManager/TransactionList";
+
 
 const App = () => {
   return (
@@ -79,6 +82,8 @@ const App = () => {
           <Route path="categories" element={<ProductCategoryList />} />
           <Route path="categories/add" element={<AddProductCategory />} />
           <Route path="products" element={<ProductList />} />
+          <Route path="orders" element={<OrderList />} />
+
           <Route path="accounts" element={<AccountList />} />
           <Route path="accounts/add" element={<AddAccount />} />
           <Route path="reports" element={<ReportList />} />
@@ -86,6 +91,8 @@ const App = () => {
           <Route path="posts/add" element={<AddPost />} />
           <Route path="postCategories" element={<PostCategoryList />} />
           <Route path="postCategories/add" element={<AddPostCategory />} />
+          <Route path="transactions" element={<Transaction />} />
+
         </Route>
       </Routes>
     </Router>
