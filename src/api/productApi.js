@@ -60,6 +60,21 @@ const productApi = {
       params,
     });
   },
+// productApi.js
+searchProduct: (params) => {
+  return apiClient.get("/product/search", {
+    params: {
+      keyWord: params.keyWord, // Use the correct parameter name
+    },
+  });
+},
+
+  getProductStoreByCategory: (categoryId) => {
+    return apiClient.get(`/product/category_store/${categoryId}`);
+  },
+  getProductUserByCategory: (categoryId) => {
+    return apiClient.get(`/product/category_user/${categoryId}`);
+  },
   
 };
 

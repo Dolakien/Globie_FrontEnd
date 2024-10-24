@@ -11,7 +11,6 @@ const BarChart = () => {
   const [dailyRevenue, setDailyRevenue] = useState(0);
   const [yearlyRevenue, setYearlyRevenue] = useState(0);
   const [orderCounts, setOrderCounts] = useState({ shipping: 0, pending: 0, cancelled: 0 });
-  
   const [userCounts, setUserCounts] = useState({ registered: 0, unverified: 0 });
   const [productCounts, setProductCounts] = useState({ selling: 0, sold: 0, processing: 0 });
 
@@ -20,32 +19,26 @@ const BarChart = () => {
       try {
         const dailyResponse = await orderApi.countOrderByDay();
         const yearlyResponse = await orderApi.countOrderByYear();
-
-        setDailyRevenue(dailyResponse.data.data);
-        setYearlyRevenue(yearlyResponse.data.data);
-
         const shippingResponse = await orderApi.countOrderShipping();
         const pendingResponse = await orderApi.countOrderPending();
         const cancelledResponse = await orderApi.countOrderCancel();
+        const registeredResponse = await userApi.countUserTrue();
+        const unverifiedResponse = await userApi.countUserFalse();
+        const sellingResponse = await productApi.countProductSelling();
+        const soldResponse = await productApi.countProductSold();
+        const processingResponse = await productApi.countProductProcessing();
 
+        setDailyRevenue(dailyResponse.data.data);
+        setYearlyRevenue(yearlyResponse.data.data);
         setOrderCounts({
           shipping: shippingResponse.data.data,
           pending: pendingResponse.data.data,
           cancelled: cancelledResponse.data.data,
         });
-
-        const registeredResponse = await userApi.countUserTrue();
-        const unverifiedResponse = await userApi.countUserFalse();
-
         setUserCounts({
           registered: registeredResponse.data.data,
           unverified: unverifiedResponse.data.data,
         });
-
-        const sellingResponse = await productApi.countProductSelling();
-        const soldResponse = await productApi.countProductSold();
-        const processingResponse = await productApi.countProductProcessing();
-
         setProductCounts({
           selling: sellingResponse.data.data,
           sold: soldResponse.data.data,
@@ -215,26 +208,6 @@ const BarChart = () => {
     },
   };
 
-  const productOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false, // Ẩn legend cho phần này
-      },
-      title: {
-        display: true,
-        text: 'THỐNG KÊ SỐ SẢN PHẨM TRÊN NỀN TẢNG GLOBIE',
-        font: {
-          size: 18,
-        },
-        padding: {
-          top: 10,
-          bottom: 30,
-        },
-      },
-    },
-  };
-
   return (
     <div style={{ display: 'flex', minHeight: '100vh', padding: '20px' }}>
       <div style={{ width: '40%', padding: '20px', border: '2px solid #B7AC9A', borderRadius: '8px', marginRight: '20px' }}>
@@ -251,7 +224,25 @@ const BarChart = () => {
                 },
               ],
             }}
-            options={productOptions}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  display: false, // Ẩn legend cho phần này
+                },
+                title: {
+                  display: true,
+                  text: 'THỐNG KÊ SỐ SẢN PHẨM TRÊN NỀN TẢNG GLOBIE',
+                  font: {
+                    size: 18,
+                  },
+                  padding: {
+                    top: 10,
+                    bottom: 30,
+                  },
+                },
+              },
+            }}
           />
         </div>
       </div>
