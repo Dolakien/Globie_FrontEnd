@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { IoSearch } from "react-icons/io5";
 import { AiFillInstagram } from "react-icons/ai";
 import {
   FaFacebookF,
@@ -14,9 +12,18 @@ import { CiBoxList } from "react-icons/ci";
 import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
 import { useDispatch } from "react-redux";
 import { removeCart } from "../../store/cartSlice";
+import { IoSearch } from "react-icons/io5";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; // Sử dụng useNavigate
+
+
+
+// import productApi from "../../../api/productApi"; // Điều chỉnh lại nếu cần
 
 const HeaderClient = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Sử dụng useNavigate để điều hướng
+  const [searchTerm, setSearchTerm] = useState(""); // State lưu trữ từ khóa tìm kiếm
 
   const isLogged = localStorage.getItem(TOKEN_STORAGE_KEY);
   const role = localStorage.getItem(USER_ROLE_STORAGE_KEY);
@@ -29,6 +36,11 @@ const HeaderClient = () => {
     window.location.href = "/login";
   };
 
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/search?keyWord=${searchTerm}`); // Điều hướng tới trang ProductSearch với từ khóa tìm kiếm
+    }
+  };
   return (
     <>
       <div className="container mx-auto flex items-center justify-between py-6 px-2 gap-6">
@@ -42,17 +54,22 @@ const HeaderClient = () => {
             <input
               placeholder="Search products"
               className="px-3 placeholder:text-sm text-sm outline-none w-full"
+              value={searchTerm} // Lưu giá trị từ ô input
+              onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật từ khóa tìm kiếm khi người dùng nhập
             />
 
             <select name="" id="" className="text-sm outline-none">
               <option value="">All categories</option>
             </select>
 
-            <div className="px-3 cursor-pointer border-l border-l-gray-300 ml-2">
+            <div
+              className="px-3 cursor-pointer border-l border-l-gray-300 ml-2"
+              onClick={handleSearch} // Gọi hàm handleSearch khi nhấn vào biểu tượng tìm kiếm
+            >
               <IoSearch />
             </div>
           </div>
-        </div>
+          </div>
 
         <div className="flex items-center gap-x-6 gap-y-3 flex-wrap justify-end">
           <div className="flex items-center gap-x-6">

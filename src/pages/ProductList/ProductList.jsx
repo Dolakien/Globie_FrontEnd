@@ -1,5 +1,5 @@
 import { Breadcrumb, Empty, Spin } from "antd";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import ProductItem from "../../components/ProductItem/ProductItem";
 import { useQuery } from "@tanstack/react-query";
@@ -8,45 +8,56 @@ import productApi from "../../api/productApi";
 const ProductList = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
+  const [selectedTab, setSelectedTab] = useState("All");
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["PRODUCT_LIST", category],
-    queryFn: async () => {
-      try {
-        let products = [];
-
-        if (category) {
-          const res = await productApi.getProductByCategory(category);
-          products = res.data?.data ?? [];
-        } else {
-          const res = await productApi.getAllSellingProduct();
-          products = res.data?.data ?? [];
-        }
-
-        const productImageMap = await Promise.all(
-          products.map(async (it) => {
-            const imageRes = await productApi.getImageByProductId(it.productId);
-
-            return {
-              ...it,
-              images: imageRes.data?.data || [],
-            };
-          })
-        );
-
-        return productImageMap;
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        throw error;
+  const fetchProducts = async () => {
+    let products = [];
+    if (category) {
+      if (selectedTab === "All") {
+        const res = await productApi.getProductByCategory(category);
+        products = res.data?.data ?? [];
+      } else if (selectedTab === "Personal") {
+        const res = await productApi.getProductUserByCategory(category);
+        products = res.data?.data ?? [];
+      } else if (selectedTab === "Store") {
+        const res = await productApi.getProductStoreByCategory(category);
+        products = res.data?.data ?? [];
       }
-    },
+    } else {
+      const res = await productApi.getAllSellingProduct();
+      products = res.data?.data ?? [];
+    }
+
+    const productImageMap = await Promise.all(
+      products.map(async (it) => {
+        const imageRes = await productApi.getImageByProductId(it.productId);
+        return {
+          ...it,
+          images: imageRes.data?.data || [],
+        };
+      })
+    );
+
+    return productImageMap;
+  };
+
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["PRODUCT_LIST", category, selectedTab],
+    queryFn: fetchProducts,
   });
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [selectedTab, category]);
 
   const renderTitle = () => {
     if (category && data?.length > 0) {
       return data[0].productCategory.categoryName;
     }
-
     return "Products List";
   };
 
@@ -79,7 +90,6 @@ const ProductList = () => {
             <span className="font-bold text-xl text-[#262626]">
               {renderTitle()}
             </span>
-
             <span className="text-[#555555]">{data?.length ?? 0} items</span>
           </p>
 
@@ -95,13 +105,34 @@ const ProductList = () => {
 
       <div className="container mx-auto px-3 py-10">
         <div className="flex items-center gap-6">
-          <p className="font-bold text-[#FF7A00] border-b-2 border-[#FF7A00]">
+          <p
+            className={`font-bold ${
+              selectedTab === "All"
+                ? "text-[#FF7A00] border-b-2 border-[#FF7A00]"
+                : "text-[#7B7B7B] border-b-2 border-b-transparent"
+            }`}
+            onClick={() => handleTabChange("All")}
+          >
             All
           </p>
-          <p className="font-bold text-[#7B7B7B] border-b-2 border-b-transparent">
+          <p
+            className={`font-bold ${
+              selectedTab === "Personal"
+                ? "text-[#FF7A00] border-b-2 border-[#FF7A00]"
+                : "text-[#7B7B7B] border-b-2 border-b-transparent"
+            }`}
+            onClick={() => handleTabChange("Personal")}
+          >
             Personal
           </p>
-          <p className="font-bold text-[#7B7B7B] border-b-2 border-b-transparent">
+          <p
+            className={`font-bold ${
+              selectedTab === "Store"
+                ? "text-[#FF7A00] border-b-2 border-[#FF7A00]"
+                : "text-[#7B7B7B] border-b-2 border-b-transparent"
+            }`}
+            onClick={() => handleTabChange("Store")}
+          >
             Store
           </p>
         </div>
@@ -110,11 +141,7 @@ const ProductList = () => {
         {data?.length > 0 && (
           <div className="grid grid-cols-12 gap-6 mt-8">
             {data.map((it) => (
-              <ProductItem
-                key={it.productId}
-                className="col-span-4"
-                data={it}
-              />
+              <ProductItem key={it.productId} className="col-span-4" data={it} />
             ))}
           </div>
         )}

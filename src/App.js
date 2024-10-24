@@ -36,6 +36,7 @@ import UpdateInformation from "./pages/Profile/UpdateInformation/UpdateInformati
 import Bookmark from "./pages/Profile/Bookmark/Bookmark";
 import ProfileAddress from "./pages/Profile/ProfileAddress";
 import Transaction from "./pages/Admin/TransactionManager/TransactionList";
+import ProductSearch from "./pages/ProductList/ProductSearch";
 
 
 const App = () => {
@@ -62,6 +63,8 @@ const App = () => {
           <Route path="/payment-return" element={<PaymentReturn />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
+          <Route path="/search" element={<ProductSearch />} />
+
         </Route>
 
         {/* auth route */}
