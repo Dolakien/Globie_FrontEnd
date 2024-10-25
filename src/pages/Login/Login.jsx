@@ -3,7 +3,11 @@ import "./Login.css";
 import { toast } from "react-toastify";
 import { AuthApi } from "../../api/authApi";
 import { jwtDecode } from "jwt-decode";
-import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
+import {
+  STORE_INFO_STORAGE_KEY,
+  TOKEN_STORAGE_KEY,
+  USER_ROLE_STORAGE_KEY,
+} from "../../constants";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -49,8 +53,20 @@ const Login = () => {
         await AuthApi.sendOtp(email);
         setStep("VERIFY_OTP");
       } else {
+        const role = decoded?.role || decoded?.scope;
         localStorage.setItem(TOKEN_STORAGE_KEY, token);
-        localStorage.setItem(USER_ROLE_STORAGE_KEY, decoded.scope);
+        localStorage.setItem(USER_ROLE_STORAGE_KEY, role);
+
+        if (role === "STOREKEEPER") {
+          localStorage.setItem(
+            STORE_INFO_STORAGE_KEY,
+            JSON.stringify({
+              storeName: decoded.storeName,
+              storePhone: decoded.storePhone,
+              storeAddress: decoded.storeAddress,
+            })
+          );
+        }
         window.location.href = "/";
       }
     } catch (error) {

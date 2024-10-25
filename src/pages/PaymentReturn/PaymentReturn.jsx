@@ -3,6 +3,7 @@ import { Button, Result, Spin } from "antd";
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import paymentApi from "../../api/paymentApi";
+import { TOKEN_STORAGE_KEY, USER_ROLE_STORAGE_KEY } from "../../constants";
 
 const PaymentReturn = () => {
   const [searchParams] = useSearchParams();
@@ -13,6 +14,15 @@ const PaymentReturn = () => {
   const { mutate } = useMutation({
     mutationKey: ["PAYOS_CALLBACK"],
     mutationFn: (params) => paymentApi.payOsCallBack(params),
+    onSettled: () => {
+      const isPayStore = searchParams.get("name") === "Store_Order";
+
+      if (isPayStore && status === "PAID") {
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+        localStorage.removeItem(USER_ROLE_STORAGE_KEY);
+        window.location.href = "/login";
+      }
+    },
   });
 
   useEffect(() => {

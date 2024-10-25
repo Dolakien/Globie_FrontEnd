@@ -37,8 +37,6 @@ const ProductItem = ({ className, data, editable }) => {
     enabled: !!isLogged,
   });
 
-  console.log(productBookmark);
-
   const { mutate: onAddBookmark } = useMutation({
     mutationKey: ["ADD_BOOKMARK"],
     mutationFn: (productId) => {
