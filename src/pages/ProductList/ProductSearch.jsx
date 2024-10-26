@@ -22,9 +22,6 @@ const ProductSearch = () => {
         const res = await productApi.searchProduct({ keyWord: searchQuery }); // Correct parameter name
         console.log("Search API response:", res);
         products = res.data?.data ?? []; // Use API data
-      } else {
-        const res = await productApi.getAllSellingProduct();
-        products = res.data?.data ?? [];
       }
 
       // Fetch images for each product
@@ -82,9 +79,9 @@ const ProductSearch = () => {
     </div>
 
     <div className="container mx-auto py-6">
-      <h2 className="text-2xl font-bold mb-4">
-        Results for "{searchQuery}"
-      </h2>
+    <h2 className="text-2xl font-bold mb-4 ml-4">
+  Results for "{searchQuery}"
+</h2>
 
       {isLoading ? (
         <p>Loading...</p>
