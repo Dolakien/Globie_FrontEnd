@@ -9,6 +9,10 @@ const paymentApi = {
       params,
     });
   },
+
+  createPayOsStoreUrl: (data) => {
+    return apiClient.post("/payment/payos-store", data);
+  },
 };
 
 export default paymentApi;

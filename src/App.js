@@ -6,7 +6,7 @@ import ClientLayout from "./layouts/ClientLayout/ClientLayout";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import BuildPc from "./pages/BuildPc/BuildPc";
 import PostProduct from "./pages/PostProduct/PostProduct";
-import CreateStore from "./pages/CreateStore/CreateStore";
+import CreateStore from "./pages/Profile/CreateStore/CreateStore.jsx";
 import AdminLayout from "./layouts/AdminLayout/AdminLayout";
 import Dashboard from "./pages/Admin/Dashboard/Dashboard";
 import ProductCategoryList from "./pages/Admin/ProductCategoryManager/ProductCategoryList";
@@ -37,7 +37,7 @@ import Bookmark from "./pages/Profile/Bookmark/Bookmark";
 import ProfileAddress from "./pages/Profile/ProfileAddress";
 import Transaction from "./pages/Admin/TransactionManager/TransactionList";
 import ProductSearch from "./pages/ProductList/ProductSearch";
-
+import Profile from "./pages/Profile/index.jsx";
 
 const App = () => {
   return (
@@ -48,23 +48,22 @@ const App = () => {
           <Route element={<ProductDetail />} path="/products/:id" />
           <Route element={<BuildPc />} path="/build-pc" />
           <Route element={<PostProduct />} path="/post-product" />
-          <Route element={<CreateStore />} path="/create-store" />
           <Route element={<ClientProductList />} path="products" />
           <Route element={<Cart />} path="cart" />
           <Route path="/profile" element={<ProfileLayout />}>
-            <Route index element={<ProfileOverview />} />
+            <Route index element={<Profile />} />
             <Route path="information" element={<UpdateInformation />} />
             <Route path="my-products" element={<MyProducts />} />
             <Route path="my-products/:id/edit" element={<EditProduct />} />
             <Route path="bookmark" element={<Bookmark />} />
             <Route path="orders-history" element={<OrdersHistory />} />
             <Route path="address" element={<ProfileAddress />} />
+            <Route path="store" element={<CreateStore />} />
           </Route>
           <Route path="/payment-return" element={<PaymentReturn />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/search" element={<ProductSearch />} />
-
         </Route>
 
         {/* auth route */}
@@ -95,7 +94,6 @@ const App = () => {
           <Route path="postCategories" element={<PostCategoryList />} />
           <Route path="postCategories/add" element={<AddPostCategory />} />
           <Route path="transactions" element={<Transaction />} />
-
         </Route>
       </Routes>
     </Router>

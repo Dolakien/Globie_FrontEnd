@@ -16,3 +16,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.ant-radio-checked .ant-radio-inner {
+  background-color: #f79316 !important;
+  border-color: #f79316 !important;
+}
