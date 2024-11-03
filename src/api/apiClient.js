@@ -2,7 +2,7 @@ import axios from "axios";
 import { TOKEN_STORAGE_KEY } from "../constants";
 
 const apiClient = axios.create({
-  baseURL: "https://globie-bsedccbyg7c5efgy.koreasouth-01.azurewebsites.net/api/v1",
+  baseURL: "https://globie.azurewebsites.net/api/v1",
 });
 
 apiClient.interceptors.request.use(
