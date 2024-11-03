@@ -13,7 +13,7 @@ const orderApi = {
   getDeliveredOrders: () => {
     return apiClient.get("/order/all_of_user_delivered");
   },
-  getdOrders: () => {
+  getOrders: () => {
     return apiClient.get("/order/all");
   },
   getOrdersShipping: () => {
