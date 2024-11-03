@@ -153,7 +153,7 @@ const ProductDetail = () => {
             <button className="w-1/2 h-14 rounded bg-[#FAD06C] uppercase text-white"
                           onClick={() => {
                             onAddCart(); // Gọi hàm onAddCart
-                            window.location.href = "http://localhost:3000/cart"; // Điều hướng tới trang cart
+                            window.location.href = "https://globie.vercel.app/cart"; // Điều hướng tới trang cart
                           }}>
               Shop now
             </button>
