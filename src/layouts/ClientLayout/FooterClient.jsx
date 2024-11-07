@@ -97,10 +97,14 @@ const FooterClient = () => {
           </p>
 
           <div className="flex items-center gap-x-3 text-xl">
-            <FaInstagram />
-            <FaFacebook />
-            <FaTelegram />
-          </div>
+  <a href="https://www.instagram.com/https://www.instagram.com/globietechgear?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+    <FaInstagram />
+  </a>
+  <a href="https://www.facebook.com/profile.php?id=61565610658977" target="_blank" rel="noopener noreferrer">
+    <FaFacebook />
+  </a>
+</div>
+
         </div>
       </div>
     </>
