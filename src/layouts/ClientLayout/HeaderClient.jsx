@@ -81,17 +81,15 @@ const HeaderClient = () => {
           </div>
 
           <div className="flex items-center gap-x-2">
-            <Link>
-              <AiFillInstagram className="text-2xl" />
-            </Link>
+          <Link to="https://www.instagram.com/globietechgear?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+          <AiFillInstagram className="text-2xl" />
+        </Link>
 
-            <Link>
-              <FaFacebookF className="text-xl" />
-            </Link>
+          <Link to="https://www.facebook.com/profile.php?id=61565610658977" target="_blank">
+            <FaFacebookF className="text-xl" />
+          </Link>
 
-            <Link>
-              <FaTelegramPlane className="text-2xl" />
-            </Link>
+
           </div>
         </div>
       </div>
